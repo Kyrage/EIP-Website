@@ -1,15 +1,10 @@
 language: python
-python:
-  - "nightly"
-env:
-  - DJANGO_VERSION=3.1.7
-  - DJANGO_SETTINGS_MODULE='website.settings.production'
 install:
   - pip install -r requirements.txt
 before_script:
   - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 script:
-  - ./run.sh
+  - python manage.py test
 after_success:
   - chmod +x success.sh
   - ./success.sh
