@@ -3,5 +3,3 @@ python:
   - 3.9.2
 install:
   - pip install -r requirements.txt
-script:
-  - python manage.py test
