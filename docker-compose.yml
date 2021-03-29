@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  django:
+    build: .
+    container_name: website_eip
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/code
+    command: ./run.sh
+    restart: unless-stopped
