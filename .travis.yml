@@ -1,5 +1,15 @@
 language: python
 python:
-  - 3.9.2
+  - 3.9
 install:
   - pip install -r requirements.txt
+before_script:
+  - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
+script:
+  - python manage.py test
+after_success:
+  - chmod +x success.sh
+  - ./success.sh
+after_failure:
+  - chmod +x fail.sh
+  - ./fail.sh
