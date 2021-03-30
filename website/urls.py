@@ -21,6 +21,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ether.urls')),
+    path('account/login/', views.LoginView.as_view(), name='login'),
+    path('account/logout/', views.LogoutView.as_view(next_page='/'), name='logout'),
 ]
 
 # Error handling

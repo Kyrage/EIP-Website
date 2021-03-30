@@ -46,7 +46,11 @@
 				</a>
 				<nav class="top-nav-area w-100">
 					<div class="user-panel">
-						<a href="/login">Login</a> / <a href="/register">Register</a>
+						{% if user.is_authenticated %}
+							<a href="{% url 'profile' %}">Profile</a> / <a href="{% url 'logout' %}">Logout</a>
+						{% else %}
+							<a href="{% url 'login' %}">Login</a> / <a href="{% url 'login' %}">Register</a>
+						{% endif %}
 					</div>
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
@@ -71,7 +75,7 @@
 		<div class="page-info">
 			<h2>Contact</h2>
 			<div class="site-breadcrumb">
-				<a href="">Home</a>  /
+				<a href="/">Home</a>  /
 				<span>Contact</span>
 			</div>
 		</div>
