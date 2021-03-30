@@ -32,8 +32,8 @@
 </head>
 <body>
 	<!-- Page Preloder -->
-	<div>
-		<div></div>
+	<div id="preloder">
+		<div class="loader"></div>
 	</div>
 
 	<!-- Header section -->
@@ -41,7 +41,7 @@
 		<div class="header-warp">
 			<div class="header-bar-warp d-flex">
 				<!-- site logo -->
-				<a href="index.html" class="site-logo">
+				<a href="/" class="site-logo">
 					<img src={% static 'img/favicon/android-chrome-50x50.png' %} alt="">
 				</a>
 				<nav class="top-nav-area w-100">
@@ -50,22 +50,21 @@
 					</div>
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="games.html">Games</a>
+						<li><a href="/">Home</a></li>
+						<li><a href="/ether">Games</a>
 							<ul class="sub-menu">
-								<li><a href="game-single.html">Alpha</a></li>
-								<li><a href="game-single.html">Beta</a></li>
+								<li><a href="/ether/alpha">Alpha</a></li>
+								<li><a href="/ether/beta">Beta</a></li>
 							</ul>
 						</li>
-						<li><a href="blog.html">News</a></li>
-						<li><a href="contact.html">Contact</a></li>
+						<li><a href="/news">News</a></li>
+						<li><a href="/contact">Contact</a></li>
 					</ul>
 				</nav>
 			</div>
 		</div>
 	</header>
 	<!-- Header section end -->
-
 
 	<!-- Hero section -->
 	<section class="hero-section overflow-hidden">
@@ -88,7 +87,6 @@
 	</section>
 	<!-- Hero section end-->
 
-
 	<!-- Intro section -->
 	<section class="intro-section">
 		<div class="container">
@@ -109,7 +107,6 @@
 		</div>
 	</section>
 	<!-- Intro section end -->
-
 
 	<!-- Blog section -->
 	<section class="blog-section spad">
@@ -213,8 +210,8 @@
 			<div class="footer-right-pic">
 				<img src={% static 'img/footer-right-pic.png' %} alt="">
 			</div>
-			<a href="#" class="footer-logo">
-				<img src={% static 'img/logoEther.png' %} alt="">
+			<a href="/" class="footer-logo">
+				<img src={% static 'img/favicon/android-chrome-192x192.png' %} alt="">
 			</a>
 			<hr></br></br>
 			<div class="footer-social d-flex justify-content-center">
@@ -222,8 +219,8 @@
 				<a target="_blank" href="https://www.linkedin.com/company/project-ether/about/"><i class="fa fa-linkedin"></i></a>
 			</div>
 			<div class="copyright">
-				<a href="">
-					Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Project Ether Teams
+				<a>
+					Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://www.linkedin.com/company/project-ether/about/" target="_blank">Project Ether Teams
 				</a>
 			</div>
 		</div>
@@ -241,3 +238,4 @@
 
 	</body>
 </html>
+

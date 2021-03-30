@@ -33,3 +33,23 @@ def handler500(request):
 def home(request):
     context = {}
     return render(request, 'index.html', context)
+
+def games(request):
+    context = {}
+    return render(request, 'games.html', context)
+
+def alpha(request):
+    context = {}
+    return render(request, '', context)
+
+def beta(request):
+    context = {}
+    return render(request, '', context)
+
+def news(request):
+    context = {}
+    return render(request, 'blog.html', context)
+
+def contact(request):
+    context = {}
+    return render(request, 'contact.html', context)
