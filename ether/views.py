@@ -16,7 +16,8 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from .models import *
 from .forms import *
-
+from django.template.defaultfilters import slugify
+from taggit.models import Tag
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def initNewsletter(sender, instance=None, created=False, **kwargs):
@@ -143,7 +144,36 @@ def beta(request):
     return render(request, '', context)
 
 def news(request):
-    context = {}
+    posts = Post.objects.order_by('-published')
+    common_tags = Post.tags.most_common()[:4]
+    form = PostForm(request.POST)
+    if form.is_valid():
+        newpost = form.save(commit=False)
+        newpost.slug = slugify(newpost.title)
+        newpost.save()
+        form.save_m2m()
+    context = {
+        'posts':posts,
+        'common_tags':common_tags,
+        'form':form,
+    }
+    return render(request, 'blog.html', context)
+
+def detail_view(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    context = {
+        'post':post,
+    }
+    return render(request, 'detail.html', context)
+
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    # Filter posts by tag name  
+    posts = Post.objects.filter(tags=tag)
+    context = {
+        'tag':tag,
+        'posts':posts,
+    }
     return render(request, 'blog.html', context)
 
 def contact(request):

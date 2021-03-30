@@ -16,3 +16,12 @@ class NewsletterForm(ModelForm):
     class Meta:
         model = Newsletter
         fields = ["author"]
+
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = [
+            'title',
+            'description',
+            'tags',
+        ]
