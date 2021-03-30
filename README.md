@@ -22,9 +22,17 @@ In the manage.py root to launch the units tests
     ./manage.py test
 ```
 
+Other Usage (Without docker):
+pip3 install -r requirements.txt 
+
+python3 manage.py makemigrations posts
+python3 manage.py migrate
+python3 manage.py runserver
+
 ## Contributing
 Tristan M & Jean-Baptiste C
 
 # Project Ether Teams
 
 Enjoy yourself!
+
