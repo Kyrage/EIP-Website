@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib import messages
 from django.urls import reverse
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -15,6 +17,12 @@ from .tokens import account_activation_token
 from .models import *
 from .forms import *
 
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def initNewsletter(sender, instance=None, created=False, **kwargs):
+    if created:
+        newsletter = Newsletter.objects.create(author=instance)
+        newsletter.publish()
 
 def handler401(request):
     """Error management 401 unauthorized\n\n
@@ -141,3 +149,26 @@ def news(request):
 def contact(request):
     context = {}
     return render(request, 'contact.html', context)
+
+def newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['author']
+            obj, created = Newsletter.objects.update_or_create(author=email)
+            if created:
+                obj.registered = True
+                obj.edit()
+                messages.success(request, "You are now registered to the newsletter!")
+            else:
+                obj.author = email
+                obj.registered = True
+                obj.publish()
+                messages.success(request, "You are now registered to the newsletter!")
+        else:
+            messages.warning(request, "The field isn't valid!")
+    else:
+        form = NewsletterForm()
+    return redirect('profile')
+        
+        

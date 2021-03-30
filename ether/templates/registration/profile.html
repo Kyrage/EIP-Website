@@ -103,8 +103,9 @@
 	<section class="newsletter-section">
 		<div class="container">
 			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
+			<form class="newsletter-form" method="post" action="{% url 'newsletter' %}">
+				{% csrf_token %}
+				<input type="email" name="author" placeholder="ENTER YOUR E-MAIL" required="">
 				<button class="site-btn">subscribe  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></button>
 			</form>
 		</div>

@@ -26,4 +26,7 @@ urlpatterns = [
 
     # Contact page
     path('contact', views.contact, name='contact'),
+
+    # Newsletter
+    path('newsletter', views.newsletter, name='newsletter'),
 ]
