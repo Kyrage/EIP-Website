@@ -11,17 +11,13 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
 
 class NewsletterForm(ModelForm):
-    author = EmailField(max_length=254)
+    email = EmailField(max_length=254)
 
     class Meta:
         model = Newsletter
-        fields = ["author"]
+        fields = ["email"]
 
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = [
-            'title',
-            'description',
-            'tags',
-        ]
+        fields = ['title', 'description', 'tags']

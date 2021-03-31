@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="fr">
 <head>
 	<title>EIP - Project Ether</title>
 	<meta charset="UTF-8">
@@ -124,7 +124,7 @@
 			<h2>Subscribe to our newsletter</h2>
 			<form class="newsletter-form" method="post" action="{% url 'newsletter' %}">
 				{% csrf_token %}
-				<input type="email" name="author" placeholder="ENTER YOUR E-MAIL" required="">
+				<input type="email" name="email" placeholder="ENTER YOUR E-MAIL" required="">
 				<button class="site-btn">subscribe  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></button>
 			</form>
 		</div>

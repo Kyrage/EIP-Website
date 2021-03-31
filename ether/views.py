@@ -144,36 +144,33 @@ def beta(request):
     return render(request, '', context)
 
 def news(request):
-    posts = Post.objects.order_by('-published')
+    posts = Post.objects.order_by('-created_date')
     common_tags = Post.tags.most_common()[:4]
     form = PostForm(request.POST)
     if form.is_valid():
         newpost = form.save(commit=False)
+        newpost.author = request.user
+        newpost.title = form.cleaned_data["title"]
+        newpost.description = form.cleaned_data["description"]
         newpost.slug = slugify(newpost.title)
-        newpost.save()
+        newpost.publish()
         form.save_m2m()
-    context = {
-        'posts':posts,
-        'common_tags':common_tags,
-        'form':form,
-    }
+        messages.success(request, "Post added!")
+        messages.add_message(request, messages.INFO, 'Hello world.')
+    else:
+        messages.warning(request, "The field isn't valid!")
+    context = {'posts': posts, 'common_tags': common_tags, 'form': form}
     return render(request, 'blog.html', context)
 
-def detail_view(request, slug):
+def specificNews(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    context = {
-        'post':post,
-    }
+    context = {'post': post}
     return render(request, 'detail.html', context)
 
 def tagged(request, slug):
-    tag = get_object_or_404(Tag, slug=slug)
-    # Filter posts by tag name  
+    tag = get_object_or_404(Tag, slug=slug) 
     posts = Post.objects.filter(tags=tag)
-    context = {
-        'tag':tag,
-        'posts':posts,
-    }
+    context = {'tag': tag, 'posts': posts}
     return render(request, 'blog.html', context)
 
 def contact(request):

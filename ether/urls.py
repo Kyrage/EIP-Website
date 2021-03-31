@@ -23,7 +23,7 @@ urlpatterns = [
 
     # Blog page
     path('news', views.news, name='news'),
-    path('post/<slug:slug>/', views.detail_view, name="detail"),
+    path('post/<slug:slug>/', views.specificNews, name="detail"),
     path('tag/<slug:slug>/', views.tagged, name="tagged"),
 
     # Contact page
