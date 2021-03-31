@@ -12,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
+from django.core.mail import send_mail, BadHeaderError
 from .tokens import account_activation_token
 from .models import *
 from .forms import *
@@ -135,16 +135,60 @@ def games(request):
 
 @login_required(login_url='login')
 def alpha(request):
-    context = {}
-    return render(request, '', context)
+    if request.method == 'POST':
+        form = GameForm(request.POST)
+        if form.is_valid():
+            obj, created = Game.objects.update_or_create(author=request.user)
+            if created:
+                obj.alpha = True
+                obj.edit()
+                messages.success(request, "You are now registered to Alpha!")
+            else:
+                obj.author = request.user
+                obj.alpha = True
+                obj.publish()
+                messages.success(request, "You are now registered to Alpha!")
+        else:
+            messages.warning(request, "An Error occured please try again!")
+    else:
+        form = GameForm()
+    try:
+        x = Game.objects.get(author=request.user)
+        x = x.alpha
+    except:
+        x = False
+    context = {'alpha': x}
+    return render(request, 'alpha.html', context)
 
 @login_required(login_url='login')
 def beta(request):
-    context = {}
-    return render(request, '', context)
+    if request.method == 'POST':
+        form = GameForm(request.POST)
+        if form.is_valid():
+            obj, created = Game.objects.update_or_create(author=request.user)
+            if created:
+                obj.beta = True
+                obj.edit()
+                messages.success(request, "You are now registered to Beta!")
+            else:
+                obj.author = request.user
+                obj.beta = True
+                obj.publish()
+                messages.success(request, "You are now registered to Beta!")
+        else:
+            messages.warning(request, "An Error occured please try again!")
+    else:
+        form = GameForm()
+    try:
+        x = Game.objects.get(author=request.user)
+        x = x.beta
+    except:
+        x = False
+    context = {'beta': x}
+    return render(request, 'beta.html', context)
 
 def news(request):
-    posts = Post.objects.order_by('-created_date')
+    posts = Post.objects.order_by('-created_date', '-last_edit')
     common_tags = Post.tags.most_common()[:4]
     form = PostForm(request.POST)
     if form.is_valid():
@@ -156,25 +200,41 @@ def news(request):
         newpost.publish()
         form.save_m2m()
         messages.success(request, "Post added!")
-        messages.add_message(request, messages.INFO, 'Hello world.')
     else:
         messages.warning(request, "The field isn't valid!")
     context = {'posts': posts, 'common_tags': common_tags, 'form': form}
     return render(request, 'blog.html', context)
 
-def specificNews(request, slug):
-    post = get_object_or_404(Post, slug=slug)
+def specificNews(request, id):
+    post = get_object_or_404(Post, id=id)
     context = {'post': post}
     return render(request, 'detail.html', context)
 
-def tagged(request, slug):
-    tag = get_object_or_404(Tag, slug=slug) 
+def tagged(request, id):
+    tag = get_object_or_404(Tag, id=id)
     posts = Post.objects.filter(tags=tag)
     context = {'tag': tag, 'posts': posts}
     return render(request, 'blog.html', context)
 
 def contact(request):
-    context = {}
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            name = form.cleaned_data['name']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message'] + str(" de {0}".format(name))
+            try:
+                send_mail(subject, message, from_email, ['tristan.mesurolle@epitech.eu'])
+                messages.success(request, "Message sent successfully!")
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('contact')
+        else:
+            messages.warning(request, "The field isn't valid!")
+    else:
+        form = ContactForm()
+    context = {'form': form}
     return render(request, 'contact.html', context)
 
 def newsletter(request):
@@ -197,5 +257,3 @@ def newsletter(request):
     else:
         form = NewsletterForm()
     return redirect('profile')
-        
-        

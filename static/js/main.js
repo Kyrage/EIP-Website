@@ -71,5 +71,4 @@ $(window).on('load', function() {
 	    topSpacing: 60,
 	    bottomSpacing: 60
 	});
-
 })(jQuery);

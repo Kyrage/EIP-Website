@@ -6,7 +6,7 @@
 	<title>EIP - Project Ether</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Official Website Project Ether">
-	<meta name="keywords" content="Official, ProjectEther, Ether, Mobile, Games, Blog">
+	<meta name="keywords" content="Official, ProjectEther, Ether, Mobile, Blog">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Favicon -->
 	<link href={% static 'img/favicon/favicon.ico' %} rel="shortcut icon"/>
@@ -92,40 +92,41 @@
 							<li><a href="#">{{mt}}</a></li>
 						{% endfor %}
 					</ul>
-					<form class="contact-form" method="post">
-						{% csrf_token %}
-						<input type="text" name="title" placeholder="Add title" required="">
-						<textarea type="text" name="description" placeholder="Add description" required=""></textarea>
-						<input type="text" name="tags" data-role="tagsinput" placeholder="Tags" required="">
-						<button class="site-btn">Publish<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
-					</form>
+					{% if user.is_superuser %}
+						<form class="contact-form" method="post" action="{% url 'news' %}">
+							{% csrf_token %}
+							<input type="text" name="title" placeholder="Add title" required="">
+							<textarea type="text" name="description" placeholder="Add description" required=""></textarea>
+							<input type="text" name="tags" data-role="tagsinput" placeholder="Tags" required="">
+							<button class="site-btn">Publish<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
+						</form>
+					{% endif %}
 				</div>
 			</div>
 		</div>
-	</section>
-
-	<div class="container pt-5">
-		<div class="row mb-2 posts">
-			{% for post in posts %}
-				<div class="col-md-6">
-					<div class="cards">
-						<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">
-							<div class="col p-4 d-flex flex-column position-static">
-								<h3 class="my-1"><a href="{% url 'detail' post.slug %}">{{post.title}}</a></h3>
-								<div style="display:flex">
-									{% for tag in post.tags.all %}
-									<a href="{% url 'tagged' tag.slug %}" class="mr-1 badge badge-info">#{{ tag }}</a>
-									{% endfor %}
+		<div class="container pt-5">
+			<div class="row mb-2 posts">
+				{% for post in posts %}
+					<div class="col-md-6">
+						<div class="cards">
+							<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">
+								<div class="col p-4 d-flex flex-column position-static">
+									<h3 class="my-1"><a href="{% url 'detail' post.id %}">{{ post.title }}</a></h3>
+									<div style="display:flex">
+										{% for tag in post.tags.all %}
+											<a href="{% url 'tagged' tag.slug %}" class="mr-1 badge badge-info">#{{ tag }}</a>
+										{% endfor %}
+									</div>
+									<p class="mb-auto">{{post.description}}</p>
+									<p class="mb-auto text-muted">{{post.published}}</p>
 								</div>
-								<p class="mb-auto">{{post.description}}</p>
-								<p class="mb-auto text-muted">{{post.published}}</p>
 							</div>
-						</div>
-					</div>       
-				</div>
-			{% endfor %}
+						</div>       
+					</div>
+				{% endfor %}
+			</div>
 		</div>
-	</div>
+	</section>
 	<!-- Blog page end-->
 
 	<!-- Newsletter section -->

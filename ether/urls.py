@@ -23,8 +23,8 @@ urlpatterns = [
 
     # Blog page
     path('news', views.news, name='news'),
-    path('post/<slug:slug>/', views.specificNews, name="detail"),
-    path('tag/<slug:slug>/', views.tagged, name="tagged"),
+    path('post/<id>/', views.specificNews, name="detail"),
+    path('tag/<id>/', views.tagged, name="tagged"),
 
     # Contact page
     path('contact', views.contact, name='contact'),

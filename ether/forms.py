@@ -17,7 +17,18 @@ class NewsletterForm(ModelForm):
         model = Newsletter
         fields = ["email"]
 
+class GameForm(ModelForm):
+    class Meta:
+        model = Game
+        fields = []
+
 class PostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'description', 'tags']
+
+class ContactForm(Form):
+    name = CharField(required=True)
+    from_email = EmailField(required=True)
+    subject = CharField(required=True)
+    message = CharField(widget=Textarea, required=True)

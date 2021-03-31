@@ -6,7 +6,7 @@
 	<title>EIP - Project Ether</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="Official Website Project Ether">
-	<meta name="keywords" content="Official, ProjectEther, Ether, Mobile, Blog, Detail">
+	<meta name="keywords" content="Official, ProjectEther, Ether, Mobile, Alpha">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Favicon -->
 	<link href={% static 'img/favicon/favicon.ico' %} rel="shortcut icon"/>
@@ -15,6 +15,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 
 	<!-- Stylesheets -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link rel="stylesheet" href={% static 'css/bootstrap.min.css' %}/>
 	<link rel="stylesheet" href={% static 'css/font-awesome.min.css' %}/>
 	<link rel="stylesheet" href={% static 'css/slicknav.min.css' %}/>
@@ -70,26 +71,29 @@
 	</header>
 	<!-- Header section end -->
 
-	<!-- Page top section -->
-	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg/3.jpg' %}">
-		<div class="page-info">
-			<h2>Blog</h2>
-			<div class="site-breadcrumb">
-				<a href="">Home</a>  /
-				<span>Blog</span>
+    <!-- Alpha section -->
+	<section class="hero-section overflow-hidden">
+		<div class="hero-slider owl-carousel">
+			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/slider-bg-1.jpg' %}">
+				<div class="container">
+					<h2>Alpha</h2>
+					<p>registration available!</p>
+                    {% if alpha %}
+                        <button class="site-btn" disabled>Sign up  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></button>
+                        <p></p>
+                        <p></p>
+                        <p>You are already registered to the alpha</p>
+                    {% else %}
+                        <form method="post" action="{% url 'alpha' %}">
+                            {% csrf_token %}
+                            <button class="site-btn">Sign up  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></button>
+                        </form>
+                    {% endif %}
+				</div>
 			</div>
 		</div>
 	</section>
-	<!-- Page top end-->
-
-	<!-- Detail Post page -->
-    <h2>{{ post.title }}</h2>
-    {% for tag in post.tags.all %}
-    	<a href="#" class="badge badge-info" >{{ tag }}</a>
-    {% endfor %}
-    <p>{{ post.description }}</p>
-    <p>{{ post.published }}</p>
-	<!-- Detail Post end-->
+	<!-- Alpha section end-->
 
 	<!-- Newsletter section -->
 	<section class="newsletter-section">
@@ -98,7 +102,7 @@
 			<h2>Subscribe to our newsletter</h2>
 			<form class="newsletter-form" method="post" action="{% url 'newsletter' %}">
 				{% csrf_token %}
-				<input type="email" name="author" placeholder="ENTER YOUR E-MAIL" required="">
+				<input type="email" name="email" placeholder="ENTER YOUR E-MAIL" required="">
 				<button class="site-btn">subscribe  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></button>
 			</form>
 		</div>
@@ -132,6 +136,19 @@
 	<!-- Footer section end -->
 
 	<!--====== Javascripts & Jquery ======-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.setTimeout(function() {
+                $(".alert-success").fadeTo(1000, 0).slideUp(1000, function(){
+                    $(this).remove();
+                });
+            }, 5000);
+
+            $(".alert").on("click", "button.close", function() {
+                $(this).parent().animate({opacity: 0}, 500).hide('slow');
+            });
+        });
+    </script>
 	<script src={% static 'js/jquery-3.2.1.min.js' %}></script>
 	<script src={% static 'js/bootstrap.min.js' %}></script>
 	<script src={% static 'js/jquery.slicknav.min.js' %}></script>

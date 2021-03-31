@@ -378,7 +378,7 @@ ol {
 	height: 20px;
 	right: 0;
 	top: 1px;
-	background-image: url("../img/icons/arrow-down.png");
+	background-image: url("/static/img/icons/arrow-down.png");
 	background-repeat: no-repeat;
 	background-position: right center;
 }
@@ -393,7 +393,7 @@ ol {
 }
 
 .main-menu li a:hover:after {
-	background-image: url("../img/icons/arrow-down-color.png");
+	background-image: url("/static/img/icons/arrow-down-color.png");
 }
 
 .main-menu li a:hover i {
@@ -411,7 +411,7 @@ ol {
 }
 
 .main-menu li:hover>a:after {
-	background-image: url("../img/icons/arrow-down-color.png");
+	background-image: url("/static/img/icons/arrow-down-color.png");
 }
 
 .main-menu li .sub-menu {
@@ -764,7 +764,7 @@ ol {
 	-webkit-transition: all 0.2s;
 	-o-transition: all 0.2s;
 	transition: all 0.2s;
-	background-image: url("../img/icons/double-arrow.png");
+	background-image: url("/static/img/icons/double-arrow.png");
 	background-repeat: no-repeat;
 	background-position: right -120% center;
 	background-size: 11px;
