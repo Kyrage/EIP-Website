@@ -82,14 +82,14 @@
 	</section>
 	<!-- Page top end-->
 
-	<!-- Blog page -->
+	<!-- News page -->
 	<section class="blog-page">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 order-2 order-lg-1">
 					<ul class="blog-filter">
 						{% for mt in common_tags %}
-							<li><a href="#">{{mt}}</a></li>
+							<li><a href="{% url 'tagged' mt.id %}">{{ mt }}</a></li>
 						{% endfor %}
 					</ul>
 					{% if user.is_superuser %}
@@ -107,27 +107,30 @@
 		<div class="container pt-5">
 			<div class="row mb-2 posts">
 				{% for post in posts %}
-					<div class="col-md-6">
-						<div class="cards">
-							<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">
-								<div class="col p-4 d-flex flex-column position-static">
-									<h3 class="my-1"><a href="{% url 'detail' post.id %}">{{ post.title }}</a></h3>
-									<div style="display:flex">
-										{% for tag in post.tags.all %}
-											<a href="{% url 'tagged' tag.slug %}" class="mr-1 badge badge-info">#{{ tag }}</a>
-										{% endfor %}
+					{% for tag in post.tags.all %}
+						<div class="col-md-4">
+							<button class="site-btn">
+								<div class="cards">
+									<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">
+										<div class="col p-4 d-flex flex-column position-static">
+											<h3 class="my-1"><a>{{ post.title }}</a></h3>
+											<div style="display:flex">
+												<a href="{% url 'tagged' tag.id %}" class="mr-1 badge badge-info">#{{ tag }}</a>
+											</div>
+											<p class="mb-auto">{{post.description}}</p>
+											<p class="mb-auto text-muted">{{ post.created_date }}</p></br>
+											<a href="{% url 'detail' post.id %}" class="read-more">Read More <img src={% static 'img/icons/double-arrow.png' %}  alt="#"/></a>
+										</div>
 									</div>
-									<p class="mb-auto">{{post.description}}</p>
-									<p class="mb-auto text-muted">{{post.published}}</p>
-								</div>
-							</div>
-						</div>       
-					</div>
+								</div>    
+							</button>   
+						</div>
+					{% endfor %}
 				{% endfor %}
 			</div>
 		</div>
 	</section>
-	<!-- Blog page end-->
+	<!-- News page end-->
 
 	<!-- Newsletter section -->
 	<section class="newsletter-section">

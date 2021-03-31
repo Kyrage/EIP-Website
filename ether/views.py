@@ -1,23 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import login as dj_login, authenticate, update_session_auth_hash
+from django.contrib.auth import login as dj_login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib import messages
-from django.urls import reverse
 from django.dispatch import receiver
-from django.db.models.signals import post_save
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
+from django.template.defaultfilters import slugify
+from django.contrib import messages
+from django.db.models.signals import post_save
+from taggit.models import Tag
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail, BadHeaderError
-from .tokens import account_activation_token
+from .tokens import *
 from .models import *
 from .forms import *
-from django.template.defaultfilters import slugify
-from taggit.models import Tag
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def initNewsletter(sender, instance=None, created=False, **kwargs):
@@ -190,18 +189,22 @@ def beta(request):
 def news(request):
     posts = Post.objects.order_by('-created_date', '-last_edit')
     common_tags = Post.tags.most_common()[:4]
-    form = PostForm(request.POST)
-    if form.is_valid():
-        newpost = form.save(commit=False)
-        newpost.author = request.user
-        newpost.title = form.cleaned_data["title"]
-        newpost.description = form.cleaned_data["description"]
-        newpost.slug = slugify(newpost.title)
-        newpost.publish()
-        form.save_m2m()
-        messages.success(request, "Post added!")
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            newpost = form.save(commit=False)
+            newpost.author = request.user
+            newpost.title = form.cleaned_data["title"]
+            newpost.description = form.cleaned_data["description"]
+            newpost.slug = slugify(newpost.title)
+            newpost.publish()
+            form.save_m2m()
+            messages.success(request, "Post added!")
+        else:
+            print(form)
+            messages.warning(request, "The field isn't valid!")
     else:
-        messages.warning(request, "The field isn't valid!")
+        form = PostForm()
     context = {'posts': posts, 'common_tags': common_tags, 'form': form}
     return render(request, 'blog.html', context)
 

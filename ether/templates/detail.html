@@ -75,20 +75,28 @@
 		<div class="page-info">
 			<h2>Blog</h2>
 			<div class="site-breadcrumb">
-				<a href="">Home</a>  /
-				<span>Blog</span>
+				<a href="/">Home</a>  /
+				<a href="/news">News</a>  /
+				<span>Post N°{{ post.id }}</span>
 			</div>
 		</div>
 	</section>
 	<!-- Page top end-->
 
 	<!-- Detail Post page -->
-    <h2>{{ post.title }}</h2>
-    {% for tag in post.tags.all %}
-    	<a href="#" class="badge badge-info" >{{ tag }}</a>
-    {% endfor %}
-    <p>{{ post.description }}</p>
-    <p>{{ post.published }}</p>
+	<section class="featured-section">
+		<div class="featured-bg set-bg" data-setbg="{% static 'img/featured-bg.jpg' %}"></div>
+		<div class="featured-box">
+			<div class="text-box">
+				<div class="top-meta">{{ post.created_date }} /  in <a href="/news">News</a></div>
+				<h3>{{ post.title }}</h3>
+				<p>{{ post.description }}</p>
+				{% for tag in post.tags.all %}
+					<a href="#" class="badge badge-info" >{{ tag }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
 	<!-- Detail Post end-->
 
 	<!-- Newsletter section -->
