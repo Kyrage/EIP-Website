@@ -12,6 +12,8 @@ urlpatterns = [
 
     # Profile connected user
     path('account/profile/', views.profile, name='profile'),
+    path('account/profile/edit/password', views.profileEditPassword, name='profileEditPassword'),
+    path('account/profile/edit/information', views.profileEditInformation, name='profileEditInformation'),
     
     # Home page
     path('', views.home, name='home'),
@@ -23,8 +25,8 @@ urlpatterns = [
 
     # Blog page
     path('news', views.news, name='news'),
-    path('post/<id>/', views.specificNews, name="detail"),
-    path('tag/<id>/', views.tagged, name="tagged"),
+    path('news/post/<id>/', views.specificNews, name="detail"),
+    path('news/tag/<id>/', views.tagged, name="tagged"),
 
     # Contact page
     path('contact', views.contact, name='contact'),

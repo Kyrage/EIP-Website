@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.forms import *
 from .models import *
@@ -9,6 +9,11 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
+
+class EditProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
 
 class NewsletterForm(ModelForm):
     email = EmailField(max_length=254)

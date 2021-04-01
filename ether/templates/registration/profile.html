@@ -84,7 +84,7 @@
 			{% include 'errors/error.html' %}
 			<div class="row">
 				<div class="col-lg-5 order-2 order-lg-1">
-					<form class="contact-form" method="post" action="{% url 'profile' %}">
+					<form class="contact-form" method="post" action="{% url 'profileEditPassword' %}">
 						{% csrf_token %}
 						<input type="password" name="old_password" placeholder="Current password" required="" autofocus="">
 						<input type="password" name="new_password1" placeholder="New password" required="" autofocus="">
@@ -93,6 +93,13 @@
 					</form>
 				</div>
 				<div class="col-lg-7 order-1 order-lg-2 contact-text text-white">
+					<form class="contact-form" method="post" action="{% url 'profileEditInformation' %}">
+						{% csrf_token %}
+						<input type="email" name="email" value="{{ user.email }}" placeholder="Email" required="" autofocus="">
+						<input type="text" name="first_name" value="{{ user.first_name }}" placeholder="First name" required="" autofocus="">
+						<input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Last name" required="" autofocus="">
+						<button style="float:left;" class="site-btn btn-block">Update<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
+					</form>
 				</div>
 			</div>
 		</div>

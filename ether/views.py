@@ -11,9 +11,10 @@ from django.contrib import messages
 from django.db.models.signals import post_save
 from taggit.models import Tag
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import EmailMessage
 from .tokens import *
 from .models import *
 from .forms import *
@@ -108,8 +109,15 @@ def login(request):
 
 @login_required(login_url='login')
 def profile(request):
+    user = get_object_or_404(User, username=request.user)
+    context = {'user': user}
+    return render(request, 'registration/profile.html', context)
+
+
+@login_required(login_url='login')
+def profileEditPassword(request):
     if request.user.has_usable_password() == False:
-        messages.error(request, 'You are connected with OAuth2 you cannot change your password')
+        messages.error(request, 'You are connected with OAuth2 you cannot change your informations')
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -121,6 +129,22 @@ def profile(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
+    context = {"form": form}
+    return render(request, 'registration/profile.html', context)
+
+@login_required(login_url='login')
+def profileEditInformation(request):
+    if request.user.has_usable_password() == False:
+        messages.error(request, 'You are connected with OAuth2 you cannot change your informations')
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = EditProfileForm(instance=request.user)
     context = {"form": form}
     return render(request, 'registration/profile.html', context)
 
@@ -197,9 +221,12 @@ def news(request):
             newpost.title = form.cleaned_data["title"]
             newpost.description = form.cleaned_data["description"]
             newpost.slug = slugify(newpost.title)
-            newpost.publish()
-            form.save_m2m()
-            messages.success(request, "Post added!")
+            try:
+                newpost.publish()
+                form.save_m2m()
+                messages.success(request, "Post added!")
+            except:
+                messages.warning(request, "Post Title already exist!")
         else:
             print(form)
             messages.warning(request, "The field isn't valid!")
@@ -244,14 +271,14 @@ def newsletter(request):
     if request.method == 'POST':
         form = NewsletterForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['author']
-            obj, created = Newsletter.objects.update_or_create(author=email)
+            email = form.cleaned_data['email']
+            obj, created = Newsletter.objects.update_or_create(email=email)
             if created:
                 obj.registered = True
                 obj.edit()
                 messages.success(request, "You are now registered to the newsletter!")
             else:
-                obj.author = email
+                obj.email = email
                 obj.registered = True
                 obj.publish()
                 messages.success(request, "You are now registered to the newsletter!")
@@ -259,4 +286,4 @@ def newsletter(request):
             messages.warning(request, "The field isn't valid!")
     else:
         form = NewsletterForm()
-    return redirect('profile')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

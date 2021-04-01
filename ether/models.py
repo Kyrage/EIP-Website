@@ -2,8 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from taggit.managers import TaggableManager
-from django.contrib import admin
-from django.utils.html import format_html
 
 class Newsletter(models.Model):
     email = models.EmailField(max_length=254)
