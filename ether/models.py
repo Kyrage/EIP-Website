@@ -1,7 +1,8 @@
 from django.db import models
-from django.conf import settings
 from django.utils import timezone
+from django.conf import settings
 from taggit.managers import TaggableManager
+from django.contrib.auth.models import User
 
 class Newsletter(models.Model):
     email = models.EmailField(max_length=254)
@@ -46,6 +47,7 @@ class Game(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    img = models.ImageField(upload_to='post')
     title = models.CharField(max_length=250)
     description = models.TextField()
     slug = models.SlugField(unique=True, max_length=100)

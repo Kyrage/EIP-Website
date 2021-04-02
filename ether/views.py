@@ -9,12 +9,15 @@ from django.template.loader import render_to_string
 from django.template.defaultfilters import slugify
 from django.contrib import messages
 from django.db.models.signals import post_save
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.forms import PasswordResetForm
 from taggit.models import Tag
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail, BadHeaderError
 from django.core.mail import EmailMessage
+from django.db.models import Q
 from .tokens import *
 from .models import *
 from .forms import *
@@ -68,7 +71,7 @@ def register(request):
                 username = form.cleaned_data.get('username')
                 current_site = get_current_site(request)
                 mail_subject = 'Activate your Ether account.'
-                message = render_to_string('registration/acc_active_email.html', {
+                message = render_to_string('registration/activeEmail.html', {
                     'user': user,
                     'domain': current_site.domain,
                     'uid':urlsafe_base64_encode(force_bytes(user.pk)),
@@ -84,7 +87,7 @@ def register(request):
     context = {"form": form}
     return render(request, "registration/login.html", context)
 
-def activate(request, uidb64, token):
+def activateAccount(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -106,6 +109,38 @@ def login(request):
         return redirect('home')
     else:
         return render(request, 'registration/login.html', locals())
+
+def resetPassword(request):
+    if request.method == "POST":
+        domain = request.headers['Host']
+        password_reset_form = PasswordResetForm(request.POST)
+        if password_reset_form.is_valid():
+            data = password_reset_form.cleaned_data['email']
+            associated_users = User.objects.filter(Q(email=data))
+            if associated_users.exists():
+                for user in associated_users:
+                    subject = "Password Reset Requested"
+                    email_template_name = 'registration/resetEmail.html'
+                    c = {
+                        "email": user.email,
+                        'domain': domain,
+                        'site_name': 'Interface',
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "user": user,
+                        'token': default_token_generator.make_token(user),
+                        'protocol': 'http',
+                    }
+                    email = render_to_string(email_template_name, c)
+                    try:
+                        send_mail(subject, email, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+                    messages.success(request, "Email sent to reset your password!")
+                    return redirect("login")
+    else:
+        form = PasswordResetForm()
+    context = {"form": form}
+    return render(request, "registration/login.html", context)
 
 @login_required(login_url='login')
 def profile(request):
@@ -214,7 +249,7 @@ def news(request):
     posts = Post.objects.order_by('-created_date', '-last_edit')
     common_tags = Post.tags.most_common()[:4]
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             newpost = form.save(commit=False)
             newpost.author = request.user
@@ -225,10 +260,10 @@ def news(request):
                 newpost.publish()
                 form.save_m2m()
                 messages.success(request, "Post added!")
+                return redirect("news/post/{0}/".format(newpost.id))
             except:
                 messages.warning(request, "Post Title already exist!")
         else:
-            print(form)
             messages.warning(request, "The field isn't valid!")
     else:
         form = PostForm()

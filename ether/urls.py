@@ -1,14 +1,12 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
-
     # Login/Register with django
     path('account/register/', views.register, name='register'),
 
-    # Activation account link
-    path('activate/(<uidb64>[0-9A-Za-z_\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate, name='activate'),
+    # Activation link
+    path('activate/(<uidb64>[0-9A-Za-z_\-]+)/(<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activateAccount, name='activateAccount'),
 
     # Profile connected user
     path('account/profile/', views.profile, name='profile'),

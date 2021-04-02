@@ -82,11 +82,11 @@
 	<section class="contact-page">
 		<div class="container">
 			{% include 'errors/error.html' %}
+			{% if form.errors %}
+				<div class="alert alert-warning"><strong>Warning!</strong> Your username and password didn't match. Please try again.</div>
+			{% endif %}
 			<div class="row">
 				<div class="col-lg-5 order-2 order-lg-1">
-					{% if form.errors %}
-						<div class="alert alert-warning"><strong>Warning!</strong> Your username and password didn't match. Please try again.</div>
-					{% endif %}
 					<form class="contact-form" method="post" action="{% url 'login' %}">
 						{% csrf_token %}
 						<input type="text" name="username" placeholder="Username" required="" autofocus="">
@@ -122,17 +122,25 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form method="post" action="">
+				<form id="reset" method="post" action="{% url 'resetPassword' %}">
 					{% csrf_token %}
 					<div class="form-group">
 						<label for="email" class="col-form-label">Email:</label>
 						<input type="email" required="" autofocus="" name="email" class="form-control" id="email">
 					</div>
 				</form>
+				<p>
+					We've emailed you instructions for setting your password, if an account exists with the email you entered.
+					You should receive them shortly.
+				</p>
+				<p>
+					If you don't receive an email, please make sure you've entered the address you registered with,
+					and check your spam folder.
+				</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Submit</button>
+				<button type="submit" form="reset" class="btn btn-primary">Submit</button>
 			</div>
 			</div>
 		</div>

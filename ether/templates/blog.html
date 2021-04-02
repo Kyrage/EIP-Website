@@ -93,9 +93,10 @@
 						{% endfor %}
 					</ul>
 					{% if user.is_superuser %}
-						<form class="contact-form" method="post" action="{% url 'news' %}">
+						<form class="contact-form" method="post" action="{% url 'news' %}" enctype="multipart/form-data">
 							{% csrf_token %}
 							<input type="text" name="title" placeholder="Add title" required="">
+							<input type="file" name="img" accept="image/*" required="">
 							<textarea type="text" name="description" placeholder="Add description" required=""></textarea>
 							<input type="text" name="tags" data-role="tagsinput" placeholder="Tags" required="">
 							<button class="site-btn">Publish<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
@@ -105,9 +106,9 @@
 			</div>
 		</div>
 		<div class="container pt-5">
-			<div class="row mb-2 posts">
+			<div class="row mb-4 posts">
 				{% for post in posts %}
-					<div class="col-md-4">
+					<div class="col-md-4 pt-5">
 						<button class="site-btn">
 							<div class="cards">
 								<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">

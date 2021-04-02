@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from django.core.files.images import get_image_dimensions
 from django.forms import *
 from .models import *
 
@@ -30,7 +31,7 @@ class GameForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'description', 'tags']
+        fields = ['title', 'img', 'description', 'tags']
 
 class ContactForm(Form):
     name = CharField(required=True)
