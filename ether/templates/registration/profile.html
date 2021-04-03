@@ -90,14 +90,21 @@
 						<input type="password" name="new_password1" placeholder="New password" required="" autofocus="">
 						<input type="password" name="new_password2" placeholder="Confirm new password" required="" autofocus="">
 						<button style="float:left;" class="site-btn btn-block">Update<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
-					</form>
+					</form><br><br><br><br>
+					<div class="col-lg-12 order-2 order-lg-1">
+						<img src="/media/{{ user.profile.avatar }}" width="500">
+					</div>
 				</div>
 				<div class="col-lg-7 order-1 order-lg-2 contact-text text-white">
-					<form class="contact-form" method="post" action="{% url 'profileEditInformation' %}">
+					<form class="contact-form" method="post" action="{% url 'profileEditInformation' %}" enctype="multipart/form-data">
 						{% csrf_token %}
 						<input type="email" name="email" value="{{ user.email }}" placeholder="Email" required="" autofocus="">
-						<input type="text" name="first_name" value="{{ user.first_name }}" placeholder="First name" required="" autofocus="">
-						<input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Last name" required="" autofocus="">
+						<input type="text" name="first_name" value="{{ user.first_name }}" placeholder="First name" autofocus="">
+						<input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Last name" autofocus="">
+						{{ user.profile.avatar }}
+						<input type="file" name="avatar" accept="image/*">
+						<input type="text" name="location" value="{{ user.profile.location }}" placeholder="Location" autofocus="">
+						<input type="date" name="birthdate" value="{{ user.profile.birthdate|date:'Y-m-d' }}" placeholder="Birth date" autofocus="">
 						<button style="float:left;" class="site-btn btn-block">Update<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
 					</form>
 				</div>

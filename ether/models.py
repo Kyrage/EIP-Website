@@ -1,8 +1,23 @@
 from django.db import models
 from django.utils import timezone
+from django.dispatch import receiver
 from django.conf import settings
+from django.db.models.signals import post_save
 from taggit.managers import TaggableManager
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    avatar = models.ImageField(upload_to='profile', default='/profile/noAvatar.jpg')
+    location = models.CharField(max_length=30, blank=True)
+    birthdate = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.user.username)
+
+    class Meta:
+        verbose_name_plural = 'Profile'
 
 class Newsletter(models.Model):
     email = models.EmailField(max_length=254)
@@ -11,7 +26,7 @@ class Newsletter(models.Model):
     last_edit = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.created_date = timezone.now()
         self.save()
 
     def edit(self):
@@ -25,14 +40,14 @@ class Newsletter(models.Model):
         verbose_name_plural = 'Newsletter'
     
 class Game(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     alpha = models.BooleanField(blank=True, null=True, default=False)
     beta = models.BooleanField(blank=True, null=True, default=False)
     created_date = models.DateTimeField(default=timezone.now)
     last_edit = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.created_date = timezone.now()
         self.save()
 
     def edit(self):
@@ -40,7 +55,7 @@ class Game(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Alpha / Beta'
@@ -56,7 +71,7 @@ class Post(models.Model):
     last_edit = models.DateTimeField(blank=True, null=True)
 
     def publish(self):
-        self.published_date = timezone.now()
+        self.created_date = timezone.now()
         self.save()
 
     def edit(self):

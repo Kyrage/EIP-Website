@@ -75,16 +75,16 @@
 		<div class="hero-slider owl-carousel">
 			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/slider-bg-1.jpg' %}">
 				<div class="container">
-					<h2>Dev in progress!</h2>
+					<h2 style="font-size:100px"><strong>Alpha</strong> registration available!</h2>
 					<p></p>
-					<a href="#" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+					<a href="/ether/alpha" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 				</div>
 			</div>
 			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/slider-bg-2.jpg' %}">
 				<div class="container">
-					<h2>Dev in progress!</h2>
+					<h2 style="font-size:100px"><strong>Beta</strong> registration available!</h2>
 					<p></p>
-					<a href="#" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+					<a href="/ether/beta" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 				</div>
 			</div>
 		</div>
@@ -123,13 +123,13 @@
 					<!-- Blog item -->
 					<div class="blog-item">
 						<div class="blog-thumb">
-							<img src={% static './img/blog/1.jpg' %} alt="">
+							<img src="/media/{{ news.img }}" alt="">
 						</div>
 						<div class="blog-text text-box text-white">
-							<div class="top-meta">10.03.21  /  in <a href="">Games</a></div>
-							<h3>Beta soon!</h3>
-							<p>Redesign of the different systems for the next BETA update of the game.</p>
-							<a href="#" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+							<div class="top-meta">{{ news.created_date }} /  in <a href="/news">News</a></div>
+							<h3>{{ news.title }}</h3>
+							<p> </p>
+							<a href="/news/post/{{ news.id }}/" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 						</div>
 					</div>
 					<!-- End Blog item -->

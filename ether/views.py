@@ -22,11 +22,15 @@ from .tokens import *
 from .models import *
 from .forms import *
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def initNewsletter(sender, instance=None, created=False, **kwargs):
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
-        newsletter = Newsletter.objects.create(author=instance)
-        newsletter.publish()
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 def handler401(request):
     """Error management 401 unauthorized\n\n
@@ -82,6 +86,8 @@ def register(request):
                 email.send()
                 messages.success(request, "Account was created for " + username + " don't forget to activate it by email")
                 return redirect("login")
+            else:
+                messages.warning(request, 'An error occured please try again.')
         else:
             form = RegisterForm()
     context = {"form": form}
@@ -100,7 +106,7 @@ def activateAccount(request, uidb64, token):
         messages.success(request, 'Thank you for your email confirmation.')
         return redirect('home')
     else:
-        messages.error(request, 'Activation link is invalid!')
+        messages.warning(request, 'Activation link is invalid!')
         return redirect('home')
 
 def login(request):
@@ -137,6 +143,10 @@ def resetPassword(request):
                         return HttpResponse('Invalid header found.')
                     messages.success(request, "Email sent to reset your password!")
                     return redirect("login")
+            else:
+                messages.error(request, 'User not found.')
+        else:
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = PasswordResetForm()
     context = {"form": form}
@@ -147,7 +157,6 @@ def profile(request):
     user = get_object_or_404(User, username=request.user)
     context = {'user': user}
     return render(request, 'registration/profile.html', context)
-
 
 @login_required(login_url='login')
 def profileEditPassword(request):
@@ -161,7 +170,7 @@ def profileEditPassword(request):
             messages.success(request, 'Your password was successfully updated!')
             return redirect('profile')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = PasswordChangeForm(request.user)
     context = {"form": form}
@@ -172,19 +181,27 @@ def profileEditInformation(request):
     if request.user.has_usable_password() == False:
         messages.error(request, 'You are connected with OAuth2 you cannot change your informations')
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile was successfully updated!')
             return redirect('profile')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.warning(request, 'An error occured please try again.')
     else:
-        form = EditProfileForm(instance=request.user)
-    context = {"form": form}
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    context = {"user_form": user_form, "profile_form": profile_form}
     return render(request, 'registration/profile.html', context)
 
 def home(request):
-    context = {}
+    try:
+        news = Post.objects.latest('id')
+    except:
+        news = "No news added"
+    context = {"news": news}
     return render(request, 'index.html', context)
 
 def games(request):
@@ -196,22 +213,22 @@ def alpha(request):
     if request.method == 'POST':
         form = GameForm(request.POST)
         if form.is_valid():
-            obj, created = Game.objects.update_or_create(author=request.user)
+            obj, created = Game.objects.update_or_create(user=request.user)
             if created:
                 obj.alpha = True
                 obj.edit()
                 messages.success(request, "You are now registered to Alpha!")
             else:
-                obj.author = request.user
+                obj.user = request.user
                 obj.alpha = True
                 obj.publish()
                 messages.success(request, "You are now registered to Alpha!")
         else:
-            messages.warning(request, "An Error occured please try again!")
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = GameForm()
     try:
-        x = Game.objects.get(author=request.user)
+        x = Game.objects.get(user=request.user)
         x = x.alpha
     except:
         x = False
@@ -223,22 +240,22 @@ def beta(request):
     if request.method == 'POST':
         form = GameForm(request.POST)
         if form.is_valid():
-            obj, created = Game.objects.update_or_create(author=request.user)
+            obj, created = Game.objects.update_or_create(user=request.user)
             if created:
                 obj.beta = True
                 obj.edit()
                 messages.success(request, "You are now registered to Beta!")
             else:
-                obj.author = request.user
+                obj.user = request.user
                 obj.beta = True
                 obj.publish()
                 messages.success(request, "You are now registered to Beta!")
         else:
-            messages.warning(request, "An Error occured please try again!")
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = GameForm()
     try:
-        x = Game.objects.get(author=request.user)
+        x = Game.objects.get(user=request.user)
         x = x.beta
     except:
         x = False
@@ -264,7 +281,7 @@ def news(request):
             except:
                 messages.warning(request, "Post Title already exist!")
         else:
-            messages.warning(request, "The field isn't valid!")
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = PostForm()
     context = {'posts': posts, 'common_tags': common_tags, 'form': form}
@@ -288,7 +305,7 @@ def contact(request):
             subject = form.cleaned_data['subject']
             name = form.cleaned_data['name']
             from_email = form.cleaned_data['from_email']
-            message = form.cleaned_data['message'] + str(" de {0}".format(name))
+            message = form.cleaned_data['message'] + str(" of {0}".format(name))
             try:
                 send_mail(subject, message, from_email, ['tristan.mesurolle@epitech.eu'])
                 messages.success(request, "Message sent successfully!")
@@ -296,7 +313,7 @@ def contact(request):
                 return HttpResponse('Invalid header found.')
             return redirect('contact')
         else:
-            messages.warning(request, "The field isn't valid!")
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = ContactForm()
     context = {'form': form}
@@ -318,7 +335,7 @@ def newsletter(request):
                 obj.publish()
                 messages.success(request, "You are now registered to the newsletter!")
         else:
-            messages.warning(request, "The field isn't valid!")
+            messages.warning(request, 'An error occured please try again.')
     else:
         form = NewsletterForm()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

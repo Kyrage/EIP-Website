@@ -1,6 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from django.core.files.images import get_image_dimensions
 from django.forms import *
 from .models import *
 
@@ -11,10 +10,15 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ["username", "email", "password1", "password2"]
 
-class EditProfileForm(UserChangeForm):
+class UserForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'email']
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'location', 'birthdate']
 
 class NewsletterForm(ModelForm):
     email = EmailField(max_length=254)
