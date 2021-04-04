@@ -32,16 +32,24 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # Default
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Utils
+    'django_simple_cookie_consent',
+    'django_cleanup.apps.CleanupConfig',
     'reset_migrations',
+    'sweetify',
     'taggit',
+    # Apps
     'ether',
 ]
+
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -117,6 +126,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ('en','English'),
+    ('fr', 'French')
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

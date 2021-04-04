@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="header-warp">
+			<div class="header-bar-warp d-flex">
+				<!-- site logo -->
+				<a href="/" class="site-logo">
+					<img src={% static 'img/favicon/favicon-50x50.png' %} alt="">
+				</a>
+				<nav class="top-nav-area w-100">
+					<div class="user-panel">
+						{% if user.is_authenticated %}
+							<a href="{% url 'profile' %}">Profile</a> / <a href="{% url 'logout' %}">Logout</a>
+						{% else %}
+							<a href="{% url 'login' %}">Login</a> / <a href="{% url 'login' %}">Register</a>
+						{% endif %}
+					</div>
+					<!-- Menu -->
+					<ul class="main-menu primary-menu">
+						<li><a href="/">Home</a></li>
+						<li><a href="/ether">Games</a>
+							<ul class="sub-menu">
+								<li><a href="/ether/alpha">Alpha</a></li>
+								<li><a href="/ether/beta">Beta</a></li>
+							</ul>
+						</li>
+						<li><a href="/news">News</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<!-- Header section end -->
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg/3.jpg' %}">
+		<div class="page-info">
+			<h2>Blog</h2>
+			<div class="site-breadcrumb">
+				<a href="">Home</a>  /
+				<span>Blog</span>
+			</div>
+		</div>
+	</section>
+	<!-- Page top end-->
+
+	<!-- News page -->
+	<section class="blog-page">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 order-2 order-lg-1">
+					<ul class="blog-filter">
+						{% for mt in commonTags %}
+							<li><a href="{% url 'tagged' mt.id %}">{{ mt }}</a></li>
+						{% endfor %}
+					</ul>
+					{% if user.is_superuser %}
+						<form class="contact-form" method="post" action="{% url 'news' %}" enctype="multipart/form-data">
+							{% csrf_token %}
+							<input type="text" name="title" placeholder="Add title" required="">
+							<input type="file" name="img" accept="image/*" required="">
+							<textarea type="text" name="description" placeholder="Add description" required=""></textarea>
+							<input type="text" name="tags" data-role="tagsinput" placeholder="Tags" required="">
+							<button class="site-btn">Publish<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="container pt-5">
+			<div class="row mb-4 posts">
+				{% for post in posts %}
+					<div class="col-md-4 pt-5">
+						<button class="site-btn">
+							<div class="cards">
+								<div class="row no-gutters border rounded  flex-md-row mb-4 shadow-sm h-md-250">
+									<div class="col p-4 d-flex flex-column position-static">
+										<h3 class="my-1"><a>{{ post.title }}</a></h3>
+										<div style="display:flex">
+											{% for tag in post.tags.all %}
+												<a href="{% url 'tagged' tag.id %}" class="mr-1 badge badge-info">#{{ tag }}</a>
+											{% endfor %}
+										</div>
+										<p class="mb-auto">{{post.description}}</p>
+										<p class="mb-auto text-muted">{{ post.created_date }}</p></br>
+										<a href="{% url 'detail' post.id %}" class="read-more">Read More <img src={% static 'img/icons/double-arrow.png' %}  alt="#"/></a>
+									</div>
+								</div>
+							</div>    
+						</button>   
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+	<!-- News page end-->
+{% endblock %}

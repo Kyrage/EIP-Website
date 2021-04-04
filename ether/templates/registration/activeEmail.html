@@ -2,7 +2,7 @@
 Hi {{ user.username }},
 
 Please click on the link to confirm your registration,
-http://{{ domain }}{% url 'activateAccount' uidb64=uid token=token %}
+{{ protocol }}://{{ domain }}{% url 'activateAccount' uidb64=uid token=token %}
 If you did not make this request, you can ignore this email.
 
 Sincerely, The Project Ether Teams
