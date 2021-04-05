@@ -50,26 +50,42 @@
 		<div class="container">
 			{% include 'errors/error.html' %}
 			{% if form.errors %}
-				<div class="alert alert-warning"><strong>Warning!</strong> Your username and password didn't match. Please try again.</div>
+				{% for field in form %}
+					{% for error in field.errors %}
+						<div class="alert alert-warning">
+							<button type="button" class="close"><span>&times;</span></button>
+							<strong>{{ error|escape }}</strong>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				{% for error in form.non_field_errors %}
+					<div class="alert alert-warning">
+						<button type="button" class="close"><span>&times;</span></button>
+						<strong>{{ error|escape }}</strong>
+					</div>
+				{% endfor %}
 			{% endif %}
 			<div class="row">
-				<div class="col-lg-5 order-2 order-lg-1">
+				<div class="col-lg-5 order-1 order-lg-1">
 					<form class="contact-form" method="post" action="{% url 'login' %}">
 						{% csrf_token %}
 						<input type="text" name="username" placeholder="Username" required="" autofocus="">
-						<input type="password" name="password" placeholder="Password" required="" autofocus="">
+						<input type="password" id="password4" name="password" placeholder="Password" required="" autofocus="">
+						<span class="fa fa-fw fa-eye field-icon toggle-login-password"></span>
 						<button style="float:left;" class="site-btn btn-block">Login<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
 					</form>
 					<br></br><br>
 					<p>Forgot your password? <a href="" data-toggle="modal" data-target="#resetPassword" data-whatever="@resetPassword">click here</a></p>
 				</div>
-				<div class="col-lg-7 order-1 order-lg-2 contact-text text-white">
+				<div class="col-lg-7 order-2 order-lg-2 contact-text text-white">
 					<form class="contact-form" method="post" action="{% url 'register' %}">
 						{% csrf_token %}
 						<input type="text" name="username" placeholder="Username" required="" autofocus="">
 						<input type="email" name="email" placeholder="Email" required="" autofocus="">
-						<input type="password" name="password1" placeholder="Password" required="" autofocus="">
-						<input type="password" name="password2" placeholder="Check Password" required="" autofocus="">
+						<input type="password" id="password1" name="password1" placeholder="Password" required="" autofocus="">
+						<span class="fa fa-fw fa-eye field-icon toggle-password"></span>
+						<input type="password" id="password2" name="password2" placeholder="Check Password" required="" autofocus="">
+						<b id="password3"></b>
 						<button style="float:left;" class="site-btn btn-block">Register<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>
 					</form>
 				</div>

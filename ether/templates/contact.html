@@ -53,12 +53,29 @@
 	<section class="contact-page">
 		<div class="container">
 			<div class="map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.5711036828093!2d3.0597698161340374!3d50.635083879501245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2d5861739394d%3A0x28571fa41ae6d216!2s5%20Rue%20du%20Palais%20Rihour%2C%2059800%20Lille!5e0!3m2!1sfr!2sfr!4v1616949835397!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>
+			{% include 'errors/error.html' %}
+			{% if form.errors %}
+				{% for field in form %}
+					{% for error in field.errors %}
+						<div class="alert alert-warning">
+							<button type="button" class="close"><span>&times;</span></button>
+							<strong>{{ error|escape }}</strong>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				{% for error in form.non_field_errors %}
+					<div class="alert alert-warning">
+						<button type="button" class="close"><span>&times;</span></button>
+						<strong>{{ error|escape }}</strong>
+					</div>
+				{% endfor %}
+			{% endif %}
 			<div class="row">
 				<div class="col-lg-7 order-2 order-lg-1">
 					<form class="contact-form" method="post" action="{% url 'contact' %}">
 						{% csrf_token %}
 						<input type="text" name="name" placeholder="Your name" required="">
-						<input type="text" name="from_email" placeholder="Your e-mail" required="">
+						<input type="email" name="from_email" placeholder="Your e-mail" required="">
 						<input type="text" name="subject" placeholder="Subject" required="">
 						<textarea name="message" placeholder="Message"></textarea>
 						<button class="site-btn">Send message<img src={% static "img/icons/double-arrow.png" %} alt="#"/></button>

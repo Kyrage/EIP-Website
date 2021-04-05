@@ -93,8 +93,6 @@ def register(request):
                     email.send()
                     sweetify.success(request, "Account was created for {0} don't forget to activate it by email.".format(username), button='Ok', timer=5000)
                     return redirect("login")
-            else:
-                sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
         else:
             form = RegisterForm()
     context = {'form': form}
@@ -151,8 +149,6 @@ def resetPassword(request):
                     return redirect('login')
             else:
                 sweetify.error(request, 'No user is linked to this email.', button='Ok', timer=5000)
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = PasswordResetForm()
     context = {'form': form}
@@ -175,8 +171,6 @@ def profileEditPassword(request):
             update_session_auth_hash(request, user)
             sweetify.success(request, 'Your password has been updated.', button='Ok', timer=5000)
             return redirect('profile')
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = PasswordChangeForm(request.user)
     context = {"form": form}
@@ -194,8 +188,6 @@ def profileEditInformation(request):
             profileForm.save()
             sweetify.success(request, 'Your information has been updated.', button='Ok', timer=5000)
             return redirect('profile')
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         userForm = UserForm(instance=request.user)
         profileForm = ProfileForm(instance=request.user.profile)
@@ -205,9 +197,10 @@ def profileEditInformation(request):
 def home(request):
     try:
         news = Post.objects.latest('id')
+        trends = Post.objects.order_by('-id')[1:4]
     except:
         news = 'No news added'
-    context = {'news': news}
+    context = {'news': news, 'trends': trends}
     return render(request, 'index.html', context)
 
 def games(request):
@@ -229,8 +222,6 @@ def alpha(request):
                 obj.alpha = True
                 obj.publish()
                 sweetify.success(request, 'You are now registered for the Alpha.', button='Ok', timer=5000)
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = GameForm()
     try:
@@ -256,8 +247,6 @@ def beta(request):
                 obj.beta = True
                 obj.publish()
                 sweetify.success(request, 'You are now registered for the Beta.', button='Ok', timer=5000)
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = GameForm()
     try:
@@ -286,8 +275,6 @@ def news(request):
                 return redirect('news/post/{0}/'.format(newpost.id))
             except:
                 sweetify.warning(request, 'A post with this title: {0} already exists.'.format(newpost.title), button='Ok', timer=5000)
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = PostForm()
     context = {'posts': posts, 'commonTags': commonTags, 'form': form}
@@ -318,8 +305,6 @@ def contact(request):
             except BadHeaderError:
                 sweetify.error(request, 'Invalid header found.', button='Ok', timer=5000)
             return redirect('contact')
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = ContactForm()
     context = {'form': form}
@@ -340,8 +325,6 @@ def newsletter(request):
                 obj.registered = True
                 obj.publish()
                 sweetify.success(request, 'You are now registered for the Newsletter.', button='Ok', timer=5000)
-        else:
-            sweetify.error(request, 'An error occured please try again later.', button='Ok', timer=5000)
     else:
         form = NewsletterForm()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -100,6 +100,30 @@
             $(".alert").on("click", "button.close", function() {
                 $(this).parent().animate({opacity: 0}, 500).hide('slow');
             });
+
+			$(".toggle-password").click(function() {
+				$(this).toggleClass("fa-eye fa-eye-slash");
+				const fields = [password1, password2, password3]
+				fields.forEach( x => {
+					if (x.type === "password") {
+						x.type = "text";
+					} else {
+						x.type = "password";
+					}
+				});
+			});
+
+			$(".toggle-login-password").click(function() {
+				$(this).toggleClass("fa-eye fa-eye-slash");
+				const fields = [password4]
+				fields.forEach( x => {
+					if (x.type === "password") {
+						x.type = "text";
+					} else {
+						x.type = "password";
+					}
+				});
+			});
         });
     </script>
 	<script src={% static 'js/bootstrap.min.js' %}></script>

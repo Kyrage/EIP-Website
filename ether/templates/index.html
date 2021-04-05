@@ -9,7 +9,7 @@
 			<div class="header-bar-warp d-flex">
 				<!-- site logo -->
 				<a href="/" class="site-logo">
-					<img src={% static 'img/favicon/favicon-50x50.png' %} alt="">
+					<img width="80" style="margin-top:-30px" src={% static 'img/favicon/favicon-100x100.png' %} alt="">
 				</a>
 				<nav class="top-nav-area w-100">
 					<div class="user-panel">
@@ -41,6 +41,13 @@
 	<section class="hero-section overflow-hidden">
 		<div class="hero-slider owl-carousel">
 			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/page-top-bg/slider-bg-1.jpg' %}">
+				<div class="container">
+					<h2 style="font-size:100px"><strong>Project Ether</strong> presentation</h2>
+					<p></p>
+					<a href="/ether" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+				</div>
+			</div>
+			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/page-top-bg/slider-bg-2.jpg' %}">
 				<div class="container">
 					<h2 style="font-size:100px"><strong>Alpha</strong> registration available!</h2>
 					<p></p>
@@ -90,7 +97,7 @@
 					<!-- Blog item -->
 					<div class="blog-item">
 						<div class="blog-thumb">
-							<img src="/media/{{ news.img }}" alt="">
+							<a href="/news/post/{{ news.id }}/"><img src="/media/{{ news.img }}" alt="#"></a>
 						</div>
 						<div class="blog-text text-box text-white">
 							<div class="top-meta">{{ news.created_date }} /  in <a href="/news">News</a></div>
@@ -107,37 +114,17 @@
 							<h4 class="widget-title">Trending</h4>
 							<div class="trending-widget">
 								<!-- Trending item -->
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img width="90" src="/media/{{ news.img }}" alt="#">
+								{% for trend in trends %}
+									<div class="tw-item">
+										<div class="tw-thumb">
+											<a href="/news/post/{{ trend.id }}/"><img width="100" src="/media/{{ trend.img }}" alt="#"></a>
+										</div>
+										<div class="tw-text">
+											<div class="tw-meta">{{ trend.created_date }} /  in <a href="/news">News</a></div>
+											<h5>{{ trend.title }}</h5>
+										</div>
 									</div>
-									<div class="tw-text">
-										<div class="tw-meta">28.03.21  /  in <a href="">Games</a></div>
-										<h5>Registration on alpha/beta available!</h5>
-									</div>
-								</div>
-								<!-- End Trending item -->
-								<!-- Trending item -->
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img width="90" src="/media/{{ news.img }}" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">28.03.21  /  in <a href="">Games</a></div>
-										<h5>Registration on alpha/beta available!</h5>
-									</div>
-								</div>
-								<!-- End Trending item -->
-								<!-- Trending item -->
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img width="90" src="/media/{{ news.img }}" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">28.03.21  /  in <a href="">Games</a></div>
-										<h5>Registration on alpha/beta available!</h5>
-									</div>
-								</div>
+								{% endfor %}
 								<!-- End Trending item -->
 							</div>
 						</div>
