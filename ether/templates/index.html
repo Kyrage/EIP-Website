@@ -8,7 +8,7 @@
 		<div class="header-warp">
 			<div class="header-bar-warp d-flex">
 				<!-- site logo -->
-				<a href="/" class="site-logo">
+				<a href="{% url 'home' %}" class="site-logo">
 					<img width="80" style="margin-top:-30px" src={% static 'img/favicon/favicon-100x100.png' %} alt="">
 				</a>
 				<nav class="top-nav-area w-100">
@@ -21,15 +21,15 @@
 					</div>
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
-						<li><a href="/">Home</a></li>
-						<li><a href="/ether">Games</a>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						<li><a href="{% url 'game' %}">Game</a>
 							<ul class="sub-menu">
-								<li><a href="/ether/alpha">Alpha</a></li>
-								<li><a href="/ether/beta">Beta</a></li>
+								<li><a href="{% url 'alpha' %}">Alpha</a></li>
+								<li><a href="{% url 'beta' %}">Beta</a></li>
 							</ul>
 						</li>
-						<li><a href="/news">News</a></li>
-						<li><a href="/contact">Contact</a></li>
+						<li><a href="{% url 'news' %}">News</a></li>
+						<li><a href="{% url 'contact' %}">Contact</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -44,21 +44,21 @@
 				<div class="container">
 					<h2 style="font-size:100px"><strong>Project Ether</strong> presentation</h2>
 					<p></p>
-					<a href="/ether" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+					<a href="{% url 'game' %}" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 				</div>
 			</div>
 			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/page-top-bg/slider-bg-2.jpg' %}">
 				<div class="container">
 					<h2 style="font-size:100px"><strong>Alpha</strong> registration available!</h2>
 					<p></p>
-					<a href="/ether/alpha" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+					<a href="{% url 'alpha' %}" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 				</div>
 			</div>
 			<div class="hero-item set-bg d-flex align-items-center justify-content-center text-center" data-setbg="{% static 'img/page-top-bg/slider-bg-2.jpg' %}">
 				<div class="container">
 					<h2 style="font-size:100px"><strong>Beta</strong> registration available!</h2>
 					<p></p>
-					<a href="/ether/beta" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+					<a href="{% url 'beta' %}" class="site-btn">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 				</div>
 			</div>
 		</div>
@@ -68,17 +68,16 @@
 	<!-- Intro section -->
 	<section class="intro-section">
 		<div class="container">
-			<div class="row">
+			<div class="row justify-content-center">
 				<div class="intro-text-box text-box text-white">
-					<center><h3>Our Teams?!</h3>
+					<center><h3>Our Teams?!</h3></center>
 					<div class="blog-thumb col align-items-center">
 						<img src={% static 'img/group/tristan.jpg' %} alt="">
 						<img src={% static 'img/group/maurin.jpg' %} alt="">
 						<img src={% static 'img/group/victor.jpg' %} alt="">
 						<img src={% static 'img/group/antony.jpg' %} alt="">
-						<img src={% static 'img/group/jean-baptiste.jpg' %} alt="">
 						<img src={% static 'img/group/christophe.jpg' %} alt="">
-						<img src={% static 'img/group/antoine.jpg' %} alt=""></center>
+						<img src={% static 'img/group/antoine.jpg' %} alt="">
 					</div>
 				</div>
 			</div>
@@ -97,13 +96,13 @@
 					<!-- Blog item -->
 					<div class="blog-item">
 						<div class="blog-thumb">
-							<a href="/news/post/{{ news.id }}/"><img src="/media/{{ news.img }}" alt="#"></a>
+							<a href={% url 'detail' id=news.id %}><img src="/media/{{ news.img }}" alt="#"></a>
 						</div>
 						<div class="blog-text text-box text-white">
-							<div class="top-meta">{{ news.created_date }} /  in <a href="/news">News</a></div>
+							<div class="top-meta">{{ news.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
 							<h3>{{ news.title }}</h3>
 							<p> </p>
-							<a href="/news/post/{{ news.id }}/" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+							<a href="{% url 'detail' id=news.id %}" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 						</div>
 					</div>
 					<!-- End Blog item -->
@@ -117,10 +116,10 @@
 								{% for trend in trends %}
 									<div class="tw-item">
 										<div class="tw-thumb">
-											<a href="/news/post/{{ trend.id }}/"><img width="100" src="/media/{{ trend.img }}" alt="#"></a>
+											<a href={% url 'detail' id=trend.id %}><img width="100" src="/media/{{ trend.img }}" alt="#"></a>
 										</div>
 										<div class="tw-text">
-											<div class="tw-meta">{{ trend.created_date }} /  in <a href="/news">News</a></div>
+											<div class="tw-meta">{{ trend.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
 											<h5>{{ trend.title }}</h5>
 										</div>
 									</div>

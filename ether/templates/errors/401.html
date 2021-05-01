@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en-GB">
 <head>
 	<title>EIP - Project Ether</title>
 	<meta charset="UTF-8">
@@ -41,8 +41,8 @@
 		<div class="header-warp">
 			<div class="header-bar-warp d-flex">
 				<!-- site logo -->
-				<a href="/" class="site-logo">
-					<img src={% static 'img/favicon/android-chrome-50x50.png' %} alt="">
+				<a href="{% url 'home' %}" class="site-logo">
+					<img width="80" style="margin-top:-30px" src={% static 'img/favicon/favicon-100x100.png' %} alt="">
 				</a>
 				<nav class="top-nav-area w-100">
 					<div class="user-panel">
@@ -54,15 +54,15 @@
 					</div>
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
-						<li><a href="/">Home</a></li>
-						<li><a href="/ether">Games</a>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						<li><a href="{% url 'game' %}">Game</a>
 							<ul class="sub-menu">
-								<li><a href="/ether/alpha">Alpha</a></li>
-								<li><a href="/ether/beta">Beta</a></li>
+								<li><a href="{% url 'alpha' %}">Alpha</a></li>
+								<li><a href="{% url 'beta' %}">Beta</a></li>
 							</ul>
 						</li>
-						<li><a href="/news">News</a></li>
-						<li><a href="/contact">Contact</a></li>
+						<li><a href="{% url 'news' %}">News</a></li>
+						<li><a href="{% url 'contact' %}">Contact</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -112,7 +112,7 @@
 			<div class="footer-right-pic">
 				<img src={% static 'img/footer-right-pic.png' %} alt="">
 			</div>
-			<a href="/" class="footer-logo">
+			<a href="{% url 'home' %}" class="footer-logo">
 				<img src={% static 'img/favicon/android-chrome-192x192.png' %} alt="">
 			</a>
 			<hr></br></br>

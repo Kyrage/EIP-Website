@@ -8,8 +8,8 @@
 		<div class="header-warp">
 			<div class="header-bar-warp d-flex">
 				<!-- site logo -->
-				<a href="/" class="site-logo">
-					<img src={% static 'img/favicon/favicon-50x50.png' %} alt="">
+				<a href="{% url 'home' %}" class="site-logo">
+					<img width="80" style="margin-top:-30px" src={% static 'img/favicon/favicon-100x100.png' %} alt="">
 				</a>
 				<nav class="top-nav-area w-100">
 					<div class="user-panel">
@@ -21,15 +21,15 @@
 					</div>
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
-						<li><a href="/">Home</a></li>
-						<li><a href="/ether">Games</a>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						<li><a href="{% url 'game' %}">Game</a>
 							<ul class="sub-menu">
-								<li><a href="/ether/alpha">Alpha</a></li>
-								<li><a href="/ether/beta">Beta</a></li>
+								<li><a href="{% url 'alpha' %}">Alpha</a></li>
+								<li><a href="{% url 'beta' %}">Beta</a></li>
 							</ul>
 						</li>
-						<li><a href="/news">News</a></li>
-						<li><a href="/contact">Contact</a></li>
+						<li><a href="{% url 'news' %}">News</a></li>
+						<li><a href="{% url 'contact' %}">Contact</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -42,7 +42,7 @@
 		<div class="page-info">
 			<h2>Contact</h2>
 			<div class="site-breadcrumb">
-				<a href="/">Home</a>  /
+				<a href="{% url 'home' %}">Home</a>  /
 				<span>Contact</span>
 			</div>
 		</div>
@@ -82,8 +82,6 @@
 					</form>
 				</div>
 				<div class="col-lg-5 order-1 order-lg-2 contact-text text-white">
-					<h3>Presentation Ether c'est quoi ?!</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.....</p>
 					<div class="cont-info">
 						<div class="ci-icon"><img src={% static "img/icons/location.png" %} alt=""></div>
 						<div class="ci-text">5-9 Rue du Palais-Rihour { Epitech Lille }</div>
@@ -94,7 +92,7 @@
 					</div>
 					<div class="cont-info">
 						<div class="ci-icon"><img src={% static "img/icons/mail.png" %} alt=""></div>
-						<div class="ci-text"></div>
+						<div class="ci-text">projectether_2023@labeip.epitech.eu</div>
 					</div>
 				</div>
 			</div>

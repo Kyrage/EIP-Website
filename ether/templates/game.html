@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="header-warp">
+			<div class="header-bar-warp d-flex">
+				<!-- site logo -->
+				<a href="{% url 'home' %}" class="site-logo">
+					<img width="80" style="margin-top:-30px" src={% static 'img/favicon/favicon-100x100.png' %} alt="">
+				</a>
+				<nav class="top-nav-area w-100">
+					<div class="user-panel">
+						{% if user.is_authenticated %}
+							<a href="{% url 'profile' %}">Profile</a> / <a href="{% url 'logout' %}">Logout</a>
+						{% else %}
+							<a href="{% url 'login' %}">Login</a> / <a href="{% url 'login' %}">Register</a>
+						{% endif %}
+					</div>
+					<!-- Menu -->
+					<ul class="main-menu primary-menu">
+						<li><a href="{% url 'home' %}">Home</a></li>
+						<li><a href="{% url 'game' %}">Game</a>
+							<ul class="sub-menu">
+								<li><a href="{% url 'alpha' %}">Alpha</a></li>
+								<li><a href="{% url 'beta' %}">Beta</a></li>
+							</ul>
+						</li>
+						<li><a href="{% url 'news' %}">News</a></li>
+						<li><a href="{% url 'contact' %}">Contact</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</header>
+	<!-- Header section end -->
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg/1.jpg' %}">
+		<div class="page-info">
+			<h2>Game</h2>
+			<div class="site-breadcrumb">
+				<a href="{% url 'home' %}">Home</a>  /
+				<span>Game</span>
+			</div>
+		</div>
+	</section>
+	<!-- Page top end-->
+
+	<!-- Featured section -->
+	<section class="featured-section">
+		<div class="featured-bg set-bg" data-setbg="{% static 'img/page-top-bg/featured-bg.jpg' %}"></div>
+		<div class="featured-box">
+			<div class="text-box">
+				<div class="top-meta">11.11.18  /  in <a href="{% url 'game' %}">Game</a></div>
+				<h3>The game you’ve been waiting  for is out now</h3>
+				<p>Welcome to the world of Project Ether. Here is a short summary of the project. Here you are the master of a dungeon and your goal is to become the best among your peers. As a dungeon boss, you have a special gift. It is possible for you to manage skills as you see fit. You have access to a range of skills that can be unlocked as your character progresses. They can also be obtained by advancing through the chapters of the game. You will be able to level up these skills to improve their effects. This will have little impact at the beginning, but will be quickly increased by your level. These skills will also be very useful in several other aspects of the game which we will talk about later.</p></br>
+				<p>In order to become the best boss we offer you several game modes. First of all a campaign in the Aether Tower, this tower will allow you to progress as a creator. It is composed of several progressive levels that will allow you to learn the basic mechanics of your character. Obviously, the more you progress, the more difficult it will be to complete these levels, giving way to dungeon-challenges whose composition, traps and enemies will be generated according to your level. Your objective will be to go as far as possible to get more rare resources and skills! At the end of the dungeon, you will get different skills related to the element present in the dungeon as well as resources that will be crucial to the construction of your dungeon. This campaign will be updated regularly, giving us the opportunity to introduce new content.</p>
+				<a href="{% url 'alpha' %}" class="read-more">Alpha<img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a><br>
+				<a href="{% url 'beta' %}" class="read-more">Beta<img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+			</div>
+		</div>
+	</section>
+	<!-- Featured section end-->
+{% endblock %}

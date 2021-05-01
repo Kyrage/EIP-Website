@@ -63,6 +63,9 @@ def handler500(request):
     return render(request, 'errors/500.html', context)
 
 def register(request):
+    """
+    Enregistrement et envois d'un mail de verification
+    """
     if request.user.is_authenticated:
         sweetify.info(request, 'You are already logged in as {0}'.format(request.user), button='Ok', timer=5000)
         return redirect('home')
@@ -99,6 +102,9 @@ def register(request):
     return render(request, 'registration/login.html', context)
 
 def activateAccount(request, uidb64, token):
+    """
+    Activation du compte par mail
+    """
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -115,6 +121,9 @@ def activateAccount(request, uidb64, token):
         return redirect('home')
 
 def login(request):
+    """
+    Redirection vers la page de connexion
+    """
     if request.user.is_authenticated() == True:
         sweetify.info(request, 'You are already logged in as {0}'.format(request.user), button='Ok', timer=5000)
         return redirect('home')
@@ -122,6 +131,9 @@ def login(request):
         return render(request, 'registration/login.html', locals())
 
 def resetPassword(request):
+    """
+    Reinitialisation par mail du mot de passe
+    """
     if request.method == 'POST':
         passwordResetForm = PasswordResetForm(request.POST)
         if passwordResetForm.is_valid():
@@ -156,12 +168,18 @@ def resetPassword(request):
 
 @login_required(login_url='login')
 def profile(request):
+    """
+    Affichage de la page profil en lien avec l'utilisateur connecte
+    """
     user = get_object_or_404(User, username=request.user)
     context = {'user': user}
     return render(request, 'registration/profile.html', context)
 
 @login_required(login_url='login')
 def profileEditPassword(request):
+    """
+    Modification du MDP sur la page profil
+    """
     if request.user.has_usable_password() == False:
         messages.warning(request, 'You are connected with a third party system and cannot modify your information from this page.')
     if request.method == 'POST':
@@ -178,6 +196,9 @@ def profileEditPassword(request):
 
 @login_required(login_url='login')
 def profileEditInformation(request):
+    """
+    Modification des informations de base sur la page profil
+    """
     if request.user.has_usable_password() == False:
         messages.warning(request, 'You are connected with a third party system and cannot modify your information from this page.')
     if request.method == 'POST':
@@ -203,12 +224,15 @@ def home(request):
     context = {'news': news, 'trends': trends}
     return render(request, 'index.html', context)
 
-def games(request):
+def game(request):
     context = {}
-    return render(request, 'games.html', context)
+    return render(request, 'game.html', context)
 
 @login_required(login_url='login')
 def alpha(request):
+    """
+    Inscription a l'ALPHA
+    """
     if request.method == 'POST':
         form = GameForm(request.POST)
         if form.is_valid():
@@ -234,6 +258,9 @@ def alpha(request):
 
 @login_required(login_url='login')
 def beta(request):
+    """
+    Inscription a la BETA
+    """
     if request.method == 'POST':
         form = GameForm(request.POST)
         if form.is_valid():
@@ -258,6 +285,9 @@ def beta(request):
     return render(request, 'beta.html', context)
 
 def news(request):
+    """
+    Recuperation et gestion des posts
+    """
     posts = Post.objects.order_by('-created_date', '-last_edit')
     commonTags = Post.tags.most_common()[:4]
     if request.method == 'POST':
@@ -281,17 +311,26 @@ def news(request):
     return render(request, 'news.html', context)
 
 def specificNews(request, id):
+    """
+    Recuperation d'une news specifique par son ID
+    """
     post = get_object_or_404(Post, id=id)
     context = {'post': post}
     return render(request, 'detail.html', context)
 
 def tagged(request, id):
+    """
+    Recuperation d'une news specifique par son Tag
+    """
     tag = get_object_or_404(Tag, id=id)
     posts = Post.objects.filter(tags=tag)
     context = {'tag': tag, 'posts': posts}
     return render(request, 'news.html', context)
 
 def contact(request):
+    """
+    Gestion du formulaire de contact
+    """
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -311,6 +350,9 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 def newsletter(request):
+    """
+    Gestion des inscriptions a le newsletter
+    """
     if request.method == 'POST':
         form = NewsletterForm(request.POST)
         if form.is_valid():
