@@ -47,13 +47,13 @@ INSTALLED_APPS = [
     'taggit',
     # Api
     'rest_framework',
+    'rest_framework.authtoken',
     # Apps
     'ether',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
 
