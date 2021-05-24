@@ -1,23 +1,23 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login as dj_login, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from django.dispatch import receiver
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
+from django.utils.encoding import force_bytes, force_text
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordResetForm
+from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import render_to_string
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.forms import PasswordResetForm
-from taggit.models import Tag
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.contrib.auth.forms import PasswordChangeForm
-from django.core.mail import send_mail, BadHeaderError
 from django.core.mail import EmailMessage
-from django.db.models import Q
+from django.dispatch import receiver
 from django.contrib import messages
+from django.db.models import Q
+from taggit.models import Tag
 from .tokens import *
 from .models import *
 from .forms import *

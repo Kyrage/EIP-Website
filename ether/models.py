@@ -38,7 +38,7 @@ class Newsletter(models.Model):
 
     class Meta:
         verbose_name_plural = 'Newsletter'
-    
+
 class Game(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     alpha = models.BooleanField(blank=True, null=True, default=False)
@@ -77,7 +77,7 @@ class Post(models.Model):
     def edit(self):
         self.last_edit = timezone.now()
         self.save()
-    
+
     def __str__(self):
         return str(self.author)
 
