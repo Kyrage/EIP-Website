@@ -94,17 +94,25 @@
 						<h2>Latest News</h2>
 					</div>
 					<!-- Blog item -->
-					<div class="blog-item">
-						<div class="blog-thumb">
-							<a href={% url 'detail' id=news.id %}><img src="/media/{{ news.img }}" alt="#"></a>
+					{% if news != None %}
+						<div class="blog-item">
+							<div class="blog-thumb">
+								<a href={% url 'detail' id=news.id %}><img src="/media/{{ news.img }}" alt="#"></a>
+							</div>
+							<div class="blog-text text-box text-white">
+								<div class="top-meta">{{ news.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
+								<h3>{{ news.title }}</h3>
+								<p> </p>
+								<a href="{% url 'detail' id=news.id %}" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
+							</div>
 						</div>
+					{% else %}
+						<div class="blog-thumb"></div>
 						<div class="blog-text text-box text-white">
-							<div class="top-meta">{{ news.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
-							<h3>{{ news.title }}</h3>
+							<h3>No news added</h3>
 							<p> </p>
-							<a href="{% url 'detail' id=news.id %}" class="read-more">Read More  <img src={% static 'img/icons/double-arrow.png' %} alt="#"/></a>
 						</div>
-					</div>
+					{% endif %}
 					<!-- End Blog item -->
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar">
@@ -113,17 +121,19 @@
 							<h4 class="widget-title">Trending</h4>
 							<div class="trending-widget">
 								<!-- Trending item -->
-								{% for trend in trends %}
-									<div class="tw-item">
-										<div class="tw-thumb">
-											<a href={% url 'detail' id=trend.id %}><img width="100" src="/media/{{ trend.img }}" alt="#"></a>
+								{% if trends != None %}
+									{% for trend in trends %}
+										<div class="tw-item">
+											<div class="tw-thumb">
+												<a href={% url 'detail' id=trend.id %}><img width="100" src="/media/{{ trend.img }}" alt="#"></a>
+											</div>
+											<div class="tw-text">
+												<div class="tw-meta">{{ trend.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
+												<h5>{{ trend.title }}</h5>
+											</div>
 										</div>
-										<div class="tw-text">
-											<div class="tw-meta">{{ trend.created_date }} /  in <a href="{% url 'news' %}">News</a></div>
-											<h5>{{ trend.title }}</h5>
-										</div>
-									</div>
-								{% endfor %}
+									{% endfor %}
+								{% endif %}
 								<!-- End Trending item -->
 							</div>
 						</div>
