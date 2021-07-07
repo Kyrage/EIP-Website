@@ -219,9 +219,11 @@ def home(request):
     try:
         news = Post.objects.latest('id')
         trends = Post.objects.order_by('-id')[1:4]
+        context = {'news': news, 'trends': trends}
     except:
-        news = 'No news added'
-    context = {'news': news, 'trends': trends}
+        news = None
+        trends = None
+        context = {'news': news, 'trends': trends}
     return render(request, 'index.html', context)
 
 def game(request):
