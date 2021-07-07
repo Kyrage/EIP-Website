@@ -37,7 +37,7 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.unregister(Group)
 admin.site.unregister(Tag)
-admin.site.unregister(CookieConsentSettings)
+#admin.site.unregister(CookieConsentSettings)
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Newsletter, NewsletterAdmin)
