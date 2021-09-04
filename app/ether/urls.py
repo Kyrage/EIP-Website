@@ -31,6 +31,11 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register('users', api.UserViewSet)
+router.register('users_skills', api.UserSkillsViewSet)
+router.register('users_position', api.UserPositionsViewSet)
+router.register('users_inventory', api.UserInventoryViewSet)
+router.register('users_friends', api.UserFriendsViewSet)
+router.register('users_guild', api.UserGuildViewSet)
 
 urlpatterns += [
     path('api/', include(router.urls)),

@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  web:
+    build: ./app
+    container_name: eip
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:80
+    restart: unless-stopped
+    volumes:
+      - ./app:/app/
+      - staticfiles:/app/static/
+      - mediafiles:/app/media/
+    expose:
+      - 80
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${DBNAME}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    volumes:
+      - staticfiles:/app/static/
+      - mediafiles:/app/media/
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  staticfiles:
+  mediafiles:

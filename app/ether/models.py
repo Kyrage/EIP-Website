@@ -83,3 +83,108 @@ class Post(models.Model):
 
     class Meta:
         verbose_name_plural = 'Publication'
+
+# Get From API
+
+class UserSkills(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    cap_1 = models.CharField(max_length=250)
+    cap_2 = models.CharField(max_length=250)
+    cap_3 = models.CharField(max_length=250)
+    cap_4 = models.CharField(max_length=250)
+    created_date = models.DateTimeField(default=timezone.now)
+    last_edit = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.author)
+
+    class Meta:
+        verbose_name_plural = 'Skills'
+
+class UserPositions(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    map = models.CharField(max_length=250)
+    x = models.CharField(max_length=250)
+    y = models.CharField(max_length=250)
+    z = models.CharField(max_length=250)
+    created_date = models.DateTimeField(default=timezone.now)
+    last_edit = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.author)
+
+    class Meta:
+        verbose_name_plural = 'Position'
+
+class UserInventory(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    item = models.CharField(max_length=250)
+    number = models.IntegerField()
+    created_date = models.DateTimeField(default=timezone.now)
+    last_edit = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.author)
+
+    class Meta:
+        verbose_name_plural = 'Inventory'
+
+class UserFriends(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=250)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.author)
+
+    class Meta:
+        verbose_name_plural = 'Friends'
+
+class UserGuild(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=250)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.author)
+
+    class Meta:
+        verbose_name_plural = 'Guild'
