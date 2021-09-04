@@ -6,7 +6,7 @@ install:
 before_script:
   - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 script:
-  - python app/manage.py test
+  - cd app && python manage.py test && cd ../
 after_success:
   - chmod +x success.sh
   - ./success.sh
