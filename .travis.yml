@@ -2,11 +2,11 @@ language: python
 python:
   - 3.9
 install:
-  - pip install -r requirements.txt
+  - pip install -r /app/requirements.txt
 before_script:
   - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 script:
-  - python manage.py test
+  - python /app/manage.py test
 after_success:
   - chmod +x success.sh
   - ./success.sh
