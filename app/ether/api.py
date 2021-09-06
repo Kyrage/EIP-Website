@@ -11,12 +11,13 @@ def initToken(sender, instance=None, created=False, **kwargs):
     """
     if created:
         Token.objects.create(user=instance)
+        UserData.objects.create(user=instance)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = User
-        fields = ['url', 'username', 'password', 'first_name', 'last_name', 'email']
+        fields = '__all__'
         read_only_fields = ['is_staff', 'is_superuser']
         write_only_fields = ['password']
 
@@ -41,12 +42,26 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class UserDataSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
+
+    class Meta:
+        model = UserData
+        fields = ['url', 'user', 'level', 'gold', 'gem']
+        read_only_fields = ['is_staff', 'is_superuser']
+
+class UserDataViewSet(viewsets.ModelViewSet):
+    queryset = UserData.objects.all()
+    serializer_class = UserDataSerializer
+
 class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserSkills
-        fields = ['url', 'author', 'cap_1', 'cap_2', 'cap_3', 'cap_4']
-        read_only_fields = ['is_staff', 'is_superuser']
+        fields = ['url', 'user', 'cap_1', 'cap_2', 'cap_3', 'cap_4']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
 
 class UserSkillsViewSet(viewsets.ModelViewSet):
     queryset = UserSkills.objects.all()
@@ -54,10 +69,11 @@ class UserSkillsViewSet(viewsets.ModelViewSet):
 
 class UserPositionsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserPositions
-        fields = ['url', 'author', 'x', 'y', 'z']
-        read_only_fields = ['is_staff', 'is_superuser']
+        fields = ['url', 'user', 'map', 'x', 'y', 'z']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
 
 class UserPositionsViewSet(viewsets.ModelViewSet):
     queryset = UserPositions.objects.all()
@@ -65,10 +81,11 @@ class UserPositionsViewSet(viewsets.ModelViewSet):
 
 class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserInventory
-        fields = ['url', 'author', 'item', 'number']
-        read_only_fields = ['is_staff', 'is_superuser']
+        fields = ['url', 'user', 'item', 'number']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
 
 class UserInventoryViewSet(viewsets.ModelViewSet):
     queryset = UserInventory.objects.all()
@@ -76,10 +93,11 @@ class UserInventoryViewSet(viewsets.ModelViewSet):
 
 class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserFriends
-        fields = ['url', 'author', 'name']
-        read_only_fields = ['is_staff', 'is_superuser']
+        fields = ['url', 'user', 'name']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
 
 class UserFriendsViewSet(viewsets.ModelViewSet):
     queryset = UserFriends.objects.all()
@@ -87,10 +105,11 @@ class UserFriendsViewSet(viewsets.ModelViewSet):
 
 class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
+    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserGuild
-        fields = ['url', 'author', 'name']
-        read_only_fields = ['is_staff', 'is_superuser']
+        fields = ['url', 'user', 'name']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
 
 class UserGuildViewSet(viewsets.ModelViewSet):
     queryset = UserGuild.objects.all()

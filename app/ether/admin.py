@@ -17,8 +17,44 @@ class ProfileInline(admin.StackedInline):
     verbose_name_plural = 'Profile'
     fk_name = 'user'
 
+class UserDataInline(admin.StackedInline):
+    model = UserData
+    can_delete = False
+    verbose_name_plural = 'UserData'
+    fk_name = 'user'
+
+class UserSkillsInline(admin.StackedInline):
+    model = UserSkills
+    can_delete = False
+    verbose_name_plural = 'UserData'
+    fk_name = 'user'
+
+class UserPositionsInline(admin.StackedInline):
+    model = UserPositions
+    can_delete = False
+    verbose_name_plural = 'Positions'
+    fk_name = 'user'
+
+class UserInventoryInline(admin.StackedInline):
+    model = UserInventory
+    can_delete = False
+    verbose_name_plural = 'Inventory'
+    fk_name = 'user'
+
+class UserFriendsInline(admin.StackedInline):
+    model = UserFriends
+    can_delete = False
+    verbose_name_plural = 'Friends'
+    fk_name = 'user'
+
+class UserGuildInline(admin.StackedInline):
+    model = UserGuild
+    can_delete = False
+    verbose_name_plural = 'Guild'
+    fk_name = 'user'
+
 class UserAdmin(UserAdmin):
-    inlines = (ProfileInline, TokenInline, )
+    inlines = (ProfileInline, TokenInline, UserDataInline, UserSkillsInline, UserPositionsInline, UserInventoryInline, UserFriendsInline, UserGuildInline,)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
@@ -37,10 +73,16 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.unregister(Group)
 admin.site.unregister(Tag)
-#admin.site.unregister(CookieConsentSettings)
+admin.site.unregister(CookieConsentSettings)
+#admin.site.unregister(Token)
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Newsletter, NewsletterAdmin)
 admin.site.register(Game, GameAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(UserData)
 admin.site.register(UserSkills)
+admin.site.register(UserPositions)
+admin.site.register(UserInventory)
+admin.site.register(UserFriends)
+admin.site.register(UserGuild)

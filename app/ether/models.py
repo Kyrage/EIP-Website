@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     avatar = models.ImageField(upload_to='profile', default='/profile/noAvatar.jpg')
     location = models.CharField(max_length=30, blank=True)
     birthdate = models.DateField(blank=True, null=True)
@@ -86,8 +86,30 @@ class Post(models.Model):
 
 # Get From API
 
+class UserData(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    level = models.IntegerField(default=0)
+    gold = models.IntegerField(default=0)
+    gem = models.IntegerField(default=0)
+    created_date = models.DateTimeField(default=timezone.now)
+    last_edit = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.created_date = timezone.now()
+        self.save()
+
+    def edit(self):
+        self.last_edit = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        verbose_name_plural = 'Data'
+
 class UserSkills(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     cap_1 = models.CharField(max_length=250)
     cap_2 = models.CharField(max_length=250)
     cap_3 = models.CharField(max_length=250)
@@ -104,13 +126,13 @@ class UserSkills(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Skills'
 
 class UserPositions(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     map = models.CharField(max_length=250)
     x = models.CharField(max_length=250)
     y = models.CharField(max_length=250)
@@ -127,13 +149,13 @@ class UserPositions(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Position'
 
 class UserInventory(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     item = models.CharField(max_length=250)
     number = models.IntegerField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -148,13 +170,13 @@ class UserInventory(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Inventory'
 
 class UserFriends(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=250)
 
     def publish(self):
@@ -166,13 +188,13 @@ class UserFriends(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Friends'
 
 class UserGuild(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=250)
 
     def publish(self):
@@ -184,7 +206,7 @@ class UserGuild(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.author)
+        return str(self.user)
 
     class Meta:
         verbose_name_plural = 'Guild'
