@@ -1,3 +1,4 @@
+from rest_framework.fields import CurrentUserDefault
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers, viewsets
@@ -44,12 +45,25 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class UserDataSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
 
     class Meta:
         model = UserData
         fields = ['url', 'user', 'level', 'gold', 'gem']
-        read_only_fields = ['is_staff', 'is_superuser']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserData, user=self.context.get("request").user)
+            obj.level = validated_data['level']
+            obj.gold = validated_data['gold']
+            obj.gem = validated_data['gem']
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserDataSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserDataViewSet(viewsets.ModelViewSet):
     queryset = UserData.objects.all()
@@ -57,11 +71,25 @@ class UserDataViewSet(viewsets.ModelViewSet):
 
 class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserSkills
         fields = ['url', 'user', 'cap_1', 'cap_2', 'cap_3', 'cap_4']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserSkills, user=self.context.get("request").user)
+            obj.cap_1 = validated_data['cap_1']
+            obj.cap_2 = validated_data['cap_2']
+            obj.cap_3 = validated_data['cap_3']
+            obj.cap_4 = validated_data['cap_4']
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserSkillsSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserSkillsViewSet(viewsets.ModelViewSet):
     queryset = UserSkills.objects.all()
@@ -69,11 +97,24 @@ class UserSkillsViewSet(viewsets.ModelViewSet):
 
 class UserPositionsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserPositions
         fields = ['url', 'user', 'map', 'x', 'y', 'z']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserPositions, user=self.context.get("request").user, map=validated_data['map'])
+            obj.x = validated_data['x']
+            obj.y = validated_data['y']
+            obj.z = validated_data['z']
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserPositionsSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserPositionsViewSet(viewsets.ModelViewSet):
     queryset = UserPositions.objects.all()
@@ -81,11 +122,22 @@ class UserPositionsViewSet(viewsets.ModelViewSet):
 
 class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserInventory
         fields = ['url', 'user', 'item', 'number']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserInventory, user=self.context.get("request").user, item=validated_data['item'])
+            obj.number = validated_data['number']
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserInventorySerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserInventoryViewSet(viewsets.ModelViewSet):
     queryset = UserInventory.objects.all()
@@ -99,17 +151,41 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'user', 'name']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
+    def create(self, validated_data):
+        owner = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            owner = request.user
+        try:
+            user = get_object_or_404(UserFriends, author=owner)
+        except:
+            user = super(UserFriendsSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
+
 class UserFriendsViewSet(viewsets.ModelViewSet):
     queryset = UserFriends.objects.all()
     serializer_class = UserFriendsSerializer
 
 class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
     class Meta:
         model = UserGuild
         fields = ['url', 'user', 'name']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserGuild, user=self.context.get("request").user)
+            obj.name = validated_data['name']
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserGuildSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserGuildViewSet(viewsets.ModelViewSet):
     queryset = UserGuild.objects.all()
