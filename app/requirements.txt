@@ -11,3 +11,4 @@ six==1.15.0
 Pillow==2.2.1
 sweetify==2.0.0
 psycopg2-binary==2.8.5
+djoser==2.1.0

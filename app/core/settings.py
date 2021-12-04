@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Api
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
     # Apps
     'ether',
 ]
