@@ -48,20 +48,25 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = UserData
-        fields = ['url', 'user', 'level', 'gold', 'gem']
+        fields = ['url', 'user', 'name', 'level', 'crystal', 'cash', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
             obj = get_object_or_404(UserData, user=self.context.get("request").user)
+            obj.name = self.context.get("request").user.username
             obj.level = validated_data['level']
-            obj.gold = validated_data['gold']
-            obj.gem = validated_data['gem']
+            obj.crystal = validated_data['crystal']
+            obj.cash = validated_data['cash']
+            obj.textureSlot = validated_data['textureSlot']
+            obj.maxTextureSlot = validated_data['maxTextureSlot']
+            obj.hasDoneTutorial = validated_data['hasDoneTutorial']
             obj.save()
             return (obj)
         except:
             user = super(UserDataSerializer, self).create(validated_data)
             user.user = self.context.get("request").user
+            user.name = self.context.get("request").user.username
             user.save()
             return (user)
 

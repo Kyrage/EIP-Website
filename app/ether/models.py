@@ -88,9 +88,13 @@ class Post(models.Model):
 
 class UserData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    level = models.IntegerField(default=0)
-    gold = models.IntegerField(default=0)
-    gem = models.IntegerField(default=0)
+    name = models.CharField(max_length=50, blank=False, null=True)
+    level = models.IntegerField(default=1)
+    crystal = models.IntegerField(default=1000)
+    cash = models.IntegerField(default=1000)
+    textureSlot = models.IntegerField(default=2)
+    maxTextureSlot = models.IntegerField(default=10)
+    hasDoneTutorial = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
     last_edit = models.DateTimeField(blank=True, null=True)
 
