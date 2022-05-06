@@ -281,4 +281,4 @@ class UserTextureViewSet(viewsets.ModelViewSet):
     queryset = UserTexture.objects.all()
     serializer_class = UserTextureSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
+    search_fields = ['user']
