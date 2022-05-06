@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 from django.contrib import admin
 from taggit.admin import Tag
+from django import forms
 from .models import *
 
 class TokenInline(admin.StackedInline):
@@ -70,6 +71,35 @@ class GameAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('author', 'title', 'created_date', 'last_edit')
 
+class UserTextureForm(forms.ModelForm):
+
+    texture = forms.FileField(required=False)
+
+    def save(self, commit=True):
+        if self.cleaned_data.get('texture') is not None:
+            data = self.cleaned_data['texture'].file.read()
+            self.instance.texture = data
+        return self.instance
+
+    def save_m2m(self):
+        pass
+
+    class Meta:
+        model = UserTexture
+        fields = ['user', 'name', 'texture']
+
+
+class UserTextureAdmin(admin.ModelAdmin):
+    form = UserTextureForm
+    list_display = ('user', 'name', 'preview')
+    readonly_fields = ('preview',)
+
+    def preview(self, obj):
+        return obj.preview
+
+    preview.short_description = 'Preview Texture'
+    preview.allow_tags = True
+
 admin.site.unregister(User)
 admin.site.unregister(Group)
 admin.site.unregister(Tag)
@@ -85,3 +115,5 @@ admin.site.register(UserPositions)
 admin.site.register(UserInventory)
 admin.site.register(UserFriends)
 admin.site.register(UserGuild)
+admin.site.register(UserMatchmaking)
+admin.site.register(UserTexture, UserTextureAdmin)

@@ -37,6 +37,8 @@ router.register('users_position', api.UserPositionsViewSet)
 router.register('users_inventory', api.UserInventoryViewSet)
 router.register('users_friends', api.UserFriendsViewSet)
 router.register('users_guild', api.UserGuildViewSet)
+router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
+router.register('game/users_texture', api.UserTextureViewSet)
 
 urlpatterns += [
     path('api/', include(router.urls)),

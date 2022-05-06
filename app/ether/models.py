@@ -5,7 +5,9 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from taggit.managers import TaggableManager
 from django.contrib.auth.models import User
+from django.utils.html import mark_safe
 from django.dispatch import receiver
+from base64 import b64encode
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -215,3 +217,29 @@ class UserGuild(models.Model):
 
     class Meta:
         verbose_name_plural = 'Guild'
+
+class UserMatchmaking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        verbose_name_plural = 'Matchmaking'
+
+class UserTexture(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=250)
+    texture = models.BinaryField(null=True, blank=True, editable=True)
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        verbose_name_plural = 'Textures'
+
+    @property
+    def preview(self):
+        if self.texture:
+            return mark_safe('<img src="data:image;base64, {}" width="100" height="100" />'.format(b64encode(self.texture).decode('utf-8')))
+        return ""

@@ -1,9 +1,23 @@
+
+from django.http import HttpResponse
 from rest_framework.fields import CurrentUserDefault
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers, viewsets
+from django.db.models.aggregates import Count
+from django.views.decorators.csrf import csrf_exempt
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+from rest_framework.parsers import *
+from rest_framework.response import Response
 from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework import status
+from random import randint
 from .views import *
+
+import json
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def initToken(sender, instance=None, created=False, **kwargs):
@@ -164,6 +178,7 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
             owner = request.user
         try:
             user = get_object_or_404(UserFriends, author=owner)
+            return (user)
         except:
             user = super(UserFriendsSerializer, self).create(validated_data)
             user.user = self.context.get("request").user
@@ -196,3 +211,74 @@ class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
 class UserGuildViewSet(viewsets.ModelViewSet):
     queryset = UserGuild.objects.all()
     serializer_class = UserGuildSerializer
+
+class UserMatchmakingSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    enemy = serializers.SerializerMethodField()
+    class Meta:
+        model = UserMatchmaking
+        fields = ['url', 'user', 'enemy']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    def create(self, validated_data):
+        try:
+            user = get_object_or_404(UserMatchmaking, user=self.context.get("request").user)
+            return (user)
+        except:
+            user = super(UserMatchmakingSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
+
+    def get_enemy(self, obj):
+            level = get_object_or_404(UserData, user=self.context.get("request").user).level
+            enemy = UserMatchmaking.objects.all().filter(user__userdata__level=level).values('user', 'user__username')
+            enemy = enemy.exclude(user__username=obj)
+            fighter = enemy.order_by('?').first()
+            try:
+                return ("http://localhost/api/users/" + str(fighter['user']) + "/")
+            except:
+                return None
+            # if len(enemy) > 1:
+            #     i = randint(0, len(enemy) - 1)
+            #     UserMatchmaking.objects.filter(user__userdata__name__in=[obj, enemy[i]['user__username']]).delete()
+            #     return ("http://localhost/api/users/" + str(enemy[i]['user']) + "/")
+            # else:
+            #     try:
+            #         UserMatchmaking.objects.filter(user__userdata__name__in=[obj, enemy[0]['user__username']]).delete()
+            #         return ("http://localhost/api/users/" + str(enemy[0]['user']) + "/")
+            #     except:
+            #         return (None)
+
+class UserMatchmakingViewSet(viewsets.ModelViewSet):
+    queryset = UserMatchmaking.objects.all()
+    serializer_class = UserMatchmakingSerializer
+
+class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    class Meta:
+        model = UserTexture
+        fields = ['url', 'user', 'name', 'texture']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    @csrf_exempt
+    def create(self, validated_data):
+        user = super(UserTextureSerializer, self).create(validated_data)
+        user.user = self.context.get("request").user
+        user.name = validated_data['name']
+        user.save()
+        return (user)
+
+    # def post(self, request, validated_data):
+    #     user = super(UserTextureSerializer, self).create(validated_data)
+    #     user.user = self.context.get("request").user
+    #     user.name = validated_data['name']
+    #     user.save()
+    #     return HttpResponse(json.dumps({'message': 'upload'}), status=200)
+
+class UserTextureViewSet(viewsets.ModelViewSet):
+    queryset = UserTexture.objects.all()
+    serializer_class = UserTextureSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
