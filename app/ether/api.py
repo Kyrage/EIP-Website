@@ -28,6 +28,20 @@ def initToken(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
         UserData.objects.create(user=instance)
 
+class UserFilterData(FilterSet):
+    username = CharFilter(field_name='user__username', lookup_expr='iexact')
+
+    class Meta:
+        fields = ('username',)
+        model = UserData
+
+class UserFilterTexture(FilterSet):
+    username = CharFilter(field_name='user__username', lookup_expr='iexact')
+
+    class Meta:
+        fields = ('username',)
+        model = UserTexture
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
@@ -65,6 +79,9 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
+    def get(self):
+        print('salut')
+
     def create(self, validated_data):
         try:
             obj = get_object_or_404(UserData, user=self.context.get("request").user)
@@ -88,6 +105,8 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 class UserDataViewSet(viewsets.ModelViewSet):
     queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserFilterData
 
 class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
@@ -276,15 +295,8 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
     #     user.save()
     #     return HttpResponse(json.dumps({'message': 'upload'}), status=200)
 
-class UserFilter(FilterSet):
-    username = CharFilter(field_name='user__username', lookup_expr='iexact')
-
-    class Meta:
-        fields = ('username',)
-        model = UserTexture
-
 class UserTextureViewSet(viewsets.ModelViewSet):
     queryset = UserTexture.objects.all()
     serializer_class = UserTextureSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_class = UserFilter
+    filterset_class = UserFilterTexture
