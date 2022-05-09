@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import serializers, viewsets
 from django.db.models.aggregates import Count
 from django.views.decorators.csrf import csrf_exempt
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend, CharFilter, FilterSet
 from rest_framework import filters
 
 from rest_framework.parsers import *
@@ -277,8 +277,15 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
     #     user.save()
     #     return HttpResponse(json.dumps({'message': 'upload'}), status=200)
 
+class UserFilter(FilterSet):
+    username = CharFilter(field_name='user__username', lookup_expr='iexact')
+
+    class Meta:
+        fields = ('username',)
+        model = UserTexture
+
 class UserTextureViewSet(viewsets.ModelViewSet):
     queryset = UserTexture.objects.all()
     serializer_class = UserTextureSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['user']
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserFilter
