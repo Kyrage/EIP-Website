@@ -86,12 +86,12 @@ class UserTextureForm(forms.ModelForm):
 
     class Meta:
         model = UserTexture
-        fields = ['user', 'name', 'texture']
+        fields = ['user', 'id', 'texture']
 
 
 class UserTextureAdmin(admin.ModelAdmin):
     form = UserTextureForm
-    list_display = ('user', 'name', 'preview')
+    list_display = ('user', 'id', 'preview')
     readonly_fields = ('preview',)
 
     def preview(self, obj):

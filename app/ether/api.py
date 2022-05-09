@@ -259,14 +259,13 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     class Meta:
         model = UserTexture
-        fields = ['url', 'user', 'name', 'texture']
+        fields = ['id', 'texture']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     @csrf_exempt
     def create(self, validated_data):
         user = super(UserTextureSerializer, self).create(validated_data)
         user.user = self.context.get("request").user
-        user.name = validated_data['name']
         user.save()
         return (user)
 

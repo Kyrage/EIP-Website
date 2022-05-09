@@ -229,7 +229,6 @@ class UserMatchmaking(models.Model):
 
 class UserTexture(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=250)
     texture = models.BinaryField(null=True, blank=True, editable=True)
 
     def __str__(self):
