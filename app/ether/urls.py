@@ -31,7 +31,7 @@ urlpatterns = [
 
 router = routers.DefaultRouter()
 router.register('users', api.UserViewSet)
-router.register('users_data', api.UserDataViewSet)
+router.register('users_data', api.UserDataViewSet, basename='users_data')
 router.register('users_skills', api.UserSkillsViewSet)
 router.register('users_position', api.UserPositionsViewSet)
 router.register('users_inventory', api.UserInventoryViewSet)

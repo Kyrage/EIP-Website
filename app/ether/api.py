@@ -8,6 +8,7 @@ from django.db.models.aggregates import Count
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend, CharFilter, FilterSet
 from rest_framework import filters
+from rest_framework.request import Request
 
 from rest_framework.parsers import *
 from rest_framework.response import Response
@@ -76,11 +77,8 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = UserData
-        fields = ['url', 'user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
+        fields = ['user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
-
-    def get(self):
-        print('salut')
 
     def create(self, validated_data):
         try:
@@ -103,10 +101,14 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
             return (user)
 
 class UserDataViewSet(viewsets.ModelViewSet):
-    queryset = UserData.objects.all()
+    #queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = UserFilterData
+    #filter_backends = [DjangoFilterBackend]
+    #filterset_class = UserFilterData
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserData.objects.all().filter(user=user)
 
 class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
