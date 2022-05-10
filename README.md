@@ -13,26 +13,28 @@ Use your package manager to install docker-compose.
 ## Usage
 
 At the root of the repository to launch the project:
+
 ```
     docker-compose build && docker-compose up
 ```
 
 In the manage.py root to launch the units tests
+
 ```
     ./manage.py test
 ```
 
 Other Usage (Without docker):
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 
 python3 manage.py makemigrations posts
 python3 manage.py migrate
 python3 manage.py runserver
 
 ## Contributing
-Tristan M & Jean-Baptiste C
+
+Tristan M
 
 # Project Ether Teams
 
 Enjoy yourself!
-
