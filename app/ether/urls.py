@@ -32,12 +32,11 @@ urlpatterns = [
 router = routers.DefaultRouter()
 router.register('users', api.UserViewSet)
 router.register('users_data', api.UserDataViewSet, basename='users_data')
-router.register('users_skills', api.UserSkillsViewSet)
-router.register('users_position', api.UserPositionsViewSet)
-router.register('users_inventory', api.UserInventoryViewSet)
-router.register('users_friends', api.UserFriendsViewSet)
-router.register('users_guild', api.UserGuildViewSet)
-router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
+router.register('users_skills', api.UserSkillsViewSet, basename='users_skills')
+router.register('users_inventory', api.UserInventoryViewSet, basename='users_inventory')
+#router.register('users_friends', api.UserFriendsViewSet)
+#router.register('users_guild', api.UserGuildViewSet)
+#router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
 router.register('game/users_texture', api.UserTextureViewSet)
 
 urlpatterns += [

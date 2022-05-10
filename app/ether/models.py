@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.utils.html import mark_safe
 from django.dispatch import receiver
 from base64 import b64encode
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -117,10 +118,11 @@ class UserData(models.Model):
 
 class UserSkills(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    cap_1 = models.CharField(max_length=250)
-    cap_2 = models.CharField(max_length=250)
-    cap_3 = models.CharField(max_length=250)
-    cap_4 = models.CharField(max_length=250)
+    _id = models.PositiveIntegerField(null=False, blank=False)
+    _parentId = models.PositiveIntegerField(null=False, blank=False)
+    name = models.CharField(max_length=250, null=False, blank=False)
+    level = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    equipped = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(4)])
     created_date = models.DateTimeField(default=timezone.now)
     last_edit = models.DateTimeField(blank=True, null=True)
 
@@ -138,33 +140,12 @@ class UserSkills(models.Model):
     class Meta:
         verbose_name_plural = 'Skills'
 
-class UserPositions(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    map = models.CharField(max_length=250)
-    x = models.CharField(max_length=250)
-    y = models.CharField(max_length=250)
-    z = models.CharField(max_length=250)
-    created_date = models.DateTimeField(default=timezone.now)
-    last_edit = models.DateTimeField(blank=True, null=True)
-
-    def publish(self):
-        self.created_date = timezone.now()
-        self.save()
-
-    def edit(self):
-        self.last_edit = timezone.now()
-        self.save()
-
-    def __str__(self):
-        return str(self.user)
-
-    class Meta:
-        verbose_name_plural = 'Position'
-
 class UserInventory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    item = models.CharField(max_length=250)
-    number = models.IntegerField()
+    _id = models.PositiveIntegerField(null=False, blank=False)
+    name = models.CharField(max_length=250, null=False, blank=False)
+    quantity = models.IntegerField(null=False, blank=False, default=0)
+    comment = models.CharField(max_length=250, null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     last_edit = models.DateTimeField(blank=True, null=True)
 

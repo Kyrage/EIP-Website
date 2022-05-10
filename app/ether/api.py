@@ -114,16 +114,12 @@ class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserSkills
-        fields = ['url', 'user', 'cap_1', 'cap_2', 'cap_3', 'cap_4']
+        fields = ['user', '_id', '_parentId', 'name', 'level', 'equipped']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
-            obj = get_object_or_404(UserSkills, user=self.context.get("request").user)
-            obj.cap_1 = validated_data['cap_1']
-            obj.cap_2 = validated_data['cap_2']
-            obj.cap_3 = validated_data['cap_3']
-            obj.cap_4 = validated_data['cap_4']
+            obj = get_object_or_404(UserSkills, user=self.context.get("request").user, item=validated_data['item'])
             obj.save()
             return (obj)
         except:
@@ -133,45 +129,23 @@ class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
             return (user)
 
 class UserSkillsViewSet(viewsets.ModelViewSet):
-    queryset = UserSkills.objects.all()
+    #queryset = UserSkills.objects.all()
     serializer_class = UserSkillsSerializer
 
-class UserPositionsSerializer(serializers.HyperlinkedModelSerializer):
-    permission_classes = (IsAuthenticated,)
-    class Meta:
-        model = UserPositions
-        fields = ['url', 'user', 'map', 'x', 'y', 'z']
-        read_only_fields = ['is_staff', 'is_superuser', 'user']
-
-    def create(self, validated_data):
-        try:
-            obj = get_object_or_404(UserPositions, user=self.context.get("request").user, map=validated_data['map'])
-            obj.x = validated_data['x']
-            obj.y = validated_data['y']
-            obj.z = validated_data['z']
-            obj.save()
-            return (obj)
-        except:
-            user = super(UserPositionsSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.save()
-            return (user)
-
-class UserPositionsViewSet(viewsets.ModelViewSet):
-    queryset = UserPositions.objects.all()
-    serializer_class = UserPositionsSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return UserSkills.objects.all().filter(user=user)
 
 class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserInventory
-        fields = ['url', 'user', 'item', 'number']
+        fields = ['user', '_id', 'name', 'quantity', 'comment']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
             obj = get_object_or_404(UserInventory, user=self.context.get("request").user, item=validated_data['item'])
-            obj.number = validated_data['number']
             obj.save()
             return (obj)
         except:
@@ -181,8 +155,12 @@ class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
             return (user)
 
 class UserInventoryViewSet(viewsets.ModelViewSet):
-    queryset = UserInventory.objects.all()
+    #queryset = UserInventory.objects.all()
     serializer_class = UserInventorySerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserInventory.objects.all().filter(user=user)
 
 class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
@@ -289,13 +267,6 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
         user.user = self.context.get("request").user
         user.save()
         return (user)
-
-    # def post(self, request, validated_data):
-    #     user = super(UserTextureSerializer, self).create(validated_data)
-    #     user.user = self.context.get("request").user
-    #     user.name = validated_data['name']
-    #     user.save()
-    #     return HttpResponse(json.dumps({'message': 'upload'}), status=200)
 
 class UserTextureViewSet(viewsets.ModelViewSet):
     queryset = UserTexture.objects.all()

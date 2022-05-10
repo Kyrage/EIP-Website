@@ -30,12 +30,6 @@ class UserSkillsInline(admin.StackedInline):
     verbose_name_plural = 'UserData'
     fk_name = 'user'
 
-class UserPositionsInline(admin.StackedInline):
-    model = UserPositions
-    can_delete = False
-    verbose_name_plural = 'Positions'
-    fk_name = 'user'
-
 class UserInventoryInline(admin.StackedInline):
     model = UserInventory
     can_delete = False
@@ -55,7 +49,7 @@ class UserGuildInline(admin.StackedInline):
     fk_name = 'user'
 
 class UserAdmin(UserAdmin):
-    inlines = (ProfileInline, TokenInline, UserDataInline, UserSkillsInline, UserPositionsInline, UserInventoryInline, UserFriendsInline, UserGuildInline,)
+    inlines = (ProfileInline, TokenInline, UserDataInline, UserSkillsInline, UserInventoryInline, UserFriendsInline, UserGuildInline,)
 
     def get_inline_instances(self, request, obj=None):
         if not obj:
@@ -111,9 +105,8 @@ admin.site.register(Game, GameAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(UserData)
 admin.site.register(UserSkills)
-admin.site.register(UserPositions)
 admin.site.register(UserInventory)
-admin.site.register(UserFriends)
-admin.site.register(UserGuild)
-admin.site.register(UserMatchmaking)
+#admin.site.register(UserFriends)
+#admin.site.register(UserGuild)
+#admin.site.register(UserMatchmaking)
 admin.site.register(UserTexture, UserTextureAdmin)
