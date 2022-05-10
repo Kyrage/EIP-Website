@@ -22,9 +22,10 @@
 					<!-- Menu -->
 					<ul class="main-menu primary-menu">
 						<li><a href="{% url 'home' %}">Home</a></li>
-						<li><a href="{% url 'game' %}">Game</a>
+						<li><a href="#">Game</a>
 							<ul class="sub-menu">
-								<li><a href="{% url 'alpha' %}">Alpha</a></li>
+								<!--<li><a href="{% url 'alpha' %}">Alpha</a></li>-->
+								<li><a href="{% url 'game' %}">Presentation</a></li>
 								<li><a href="{% url 'beta' %}">Beta</a></li>
 							</ul>
 						</li>
@@ -164,7 +165,7 @@
 
 	<!-- Intro section -->
 	<section class="intro-video-section set-bg d-flex align-items-end " data-setbg={% static 'img/page-top-bg/future.jpg' %}>
-		<a href="#" class="video-play-btn video-popup"><img src={% static 'img/icons/solid-right-arrow.png' %} alt="#"></a>
+		<a class="video-play-btn video-popup"><img src={% static 'img/icons/solid-right-arrow.png' %} alt="#"></a>
 		<div class="container">
 			<div class="video-text">
 				<h2>Our trailer 'SOON'</h2>
