@@ -114,12 +114,14 @@ class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserSkills
-        fields = ['user', '_id', '_parentId', 'name', 'level', 'equipped']
+        fields = ['_id', '_parentId', 'name', 'level', 'equipped']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
-            obj = get_object_or_404(UserSkills, user=self.context.get("request").user, item=validated_data['item'])
+            obj = get_object_or_404(UserSkills, user=self.context.get("request").user, name=validated_data['name'])
+            obj.level = validated_data['level']
+            obj.equipped = validated_data['equipped']
             obj.save()
             return (obj)
         except:
@@ -140,12 +142,13 @@ class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserInventory
-        fields = ['user', '_id', 'name', 'quantity', 'comment']
+        fields = ['_id', 'name', 'quantity', 'comment']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
-            obj = get_object_or_404(UserInventory, user=self.context.get("request").user, item=validated_data['item'])
+            obj = get_object_or_404(UserInventory, user=self.context.get("request").user, name=validated_data['name'])
+            obj.quantity = validated_data['quantity']
             obj.save()
             return (obj)
         except:
