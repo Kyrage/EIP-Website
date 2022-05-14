@@ -43,6 +43,13 @@ class UserFilterTexture(FilterSet):
         fields = ('username',)
         model = UserTexture
 
+class ShopFilterTexture(FilterSet):
+    username = CharFilter(field_name='seller__username', lookup_expr='iexact')
+
+    class Meta:
+        fields = ('username',)
+        model = ShopTexture
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
@@ -276,3 +283,29 @@ class UserTextureViewSet(viewsets.ModelViewSet):
     serializer_class = UserTextureSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilterTexture
+
+class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    class Meta:
+        model = ShopTexture
+        fields = ['seller', 'id', 'texture', 'price']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    @csrf_exempt
+    def create(self, validated_data):
+        user = super(CommutaryTextureShopSerializer, self).create(validated_data)
+        user.user = self.context.get("request").user
+        user.save()
+        return (user)
+
+class CommutaryTextureViewSet(viewsets.ModelViewSet):
+    #queryset = ShopTexture.objects.all()
+    serializer_class = CommutaryTextureShopSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ShopFilterTexture
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = ShopTexture.objects.all()
+        return queryset.exclude(seller=user)

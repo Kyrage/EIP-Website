@@ -38,6 +38,7 @@ router.register('users_inventory', api.UserInventoryViewSet, basename='users_inv
 #router.register('users_guild', api.UserGuildViewSet)
 #router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
 router.register('game/users_texture', api.UserTextureViewSet)
+router.register('shop/textures', api.CommutaryTextureViewSet, basename='shop_textures')
 
 urlpatterns += [
     path('api/', include(router.urls)),

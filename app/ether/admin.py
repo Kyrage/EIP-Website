@@ -94,6 +94,34 @@ class UserTextureAdmin(admin.ModelAdmin):
     preview.short_description = 'Preview Texture'
     preview.allow_tags = True
 
+class ShopTextureForm(forms.ModelForm):
+
+    texture = forms.FileField(required=False)
+
+    def save(self, commit=True):
+        if self.cleaned_data.get('texture') is not None:
+            data = self.cleaned_data['texture'].file.read()
+            self.instance.texture = data
+        return self.instance
+
+    def save_m2m(self):
+        pass
+
+    class Meta:
+        model = ShopTexture
+        fields = ['seller', 'id', 'texture', 'price']
+
+class ShopTextureAdmin(admin.ModelAdmin):
+    form = ShopTextureForm
+    list_display = ('seller', 'id', 'price', 'preview')
+    readonly_fields = ('preview',)
+
+    def preview(self, obj):
+        return obj.preview
+
+    preview.short_description = 'Preview Texture'
+    preview.allow_tags = True
+
 admin.site.unregister(User)
 admin.site.unregister(Group)
 admin.site.unregister(Tag)
@@ -110,3 +138,4 @@ admin.site.register(UserInventory)
 #admin.site.register(UserGuild)
 #admin.site.register(UserMatchmaking)
 admin.site.register(UserTexture, UserTextureAdmin)
+admin.site.register(ShopTexture, ShopTextureAdmin)
