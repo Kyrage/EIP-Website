@@ -165,7 +165,17 @@ class UserInventory(models.Model):
 
 class UserFriends(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=250)
+    friends = models.ManyToManyField(User, related_name="friends", blank=True)
+
+    def add_friend(self, friend):
+        self.friends.add(friend)
+
+    def remove_friend(self, friend):
+        self.friends.remove(friend)
+
+    @property
+    def count_friends(self):
+        return self.friends.count()
 
     def publish(self):
         self.created_date = timezone.now()

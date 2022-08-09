@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'django_filters',
     # Apps
     'ether',
+    # Docs
+    'docs',
 ]
 
 REST_FRAMEWORK = {
@@ -197,3 +199,6 @@ EMAIL_HOST_USER = 'epitech.noreply@gmail.com'
 EMAIL_HOST_PASSWORD = 'pcejukkbasyjtyxy'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+DOCS_ROOT = os.path.join(BASE_DIR, './docs/_build/html')
+DOCS_ACCESS = 'public'

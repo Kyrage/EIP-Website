@@ -174,29 +174,22 @@ class UserInventoryViewSet(viewsets.ModelViewSet):
 
 class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.CurrentUserDefault()
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+      return obj.user.username
     class Meta:
         model = UserFriends
-        fields = ['url', 'user', 'name']
+        fields = ['user', 'friends']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
-    def create(self, validated_data):
-        owner = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            owner = request.user
-        try:
-            user = get_object_or_404(UserFriends, author=owner)
-            return (user)
-        except:
-            user = super(UserFriendsSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.save()
-            return (user)
-
 class UserFriendsViewSet(viewsets.ModelViewSet):
-    queryset = UserFriends.objects.all()
     serializer_class = UserFriendsSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        UserFriends.objects.get(user=user).add_friend(User.objects.get(username='adminTest'))
+        return UserFriends.objects.all().filter(user=user)
 
 class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)

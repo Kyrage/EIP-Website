@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from ether.views import resetPassword
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
@@ -22,6 +22,7 @@ from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    re_path(r'^docs/', include('docs.urls')),
     path('gestion/', admin.site.urls),
     path('', include('ether.urls')),
     path('auth/', include('djoser.urls')),

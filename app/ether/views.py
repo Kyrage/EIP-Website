@@ -25,12 +25,18 @@ import sweetify
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
+    """
+    Creation of a profile for each new user
+    """
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
+    """
+    Saves the user instance when all processing is finished
+    """
     instance.profile.save()
 
 def handler401(request):
@@ -47,7 +53,7 @@ def handler404(request, exception):
     :param [request]: Receives an HttpRequest
     :param [exception]: Cause of the error returned by django
     :type [request]: HttpRequest
-    :type [exception]: string
+    :type [exception]: String
     :return: Http response with html page that displays error 404 without data
     """
     context = {}
@@ -63,8 +69,10 @@ def handler500(request):
     return render(request, 'errors/500.html', context)
 
 def register(request):
-    """
-    Enregistrement et envois d'un mail de verification
+    """Registration function\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirection to the login page
     """
     if request.user.is_authenticated:
         sweetify.info(request, 'You are already logged in as {0}'.format(request.user), button='Ok', timer=5000)
@@ -102,8 +110,14 @@ def register(request):
     return render(request, 'registration/login.html', context)
 
 def activateAccount(request, uidb64, token):
-    """
-    Activation du compte par mail
+    """User account activation\n\n
+    :param [request]: Receives an HttpRequest
+    :param [uid64]: Receives an String
+    :param [token]: Receives an String
+    :type [request]: HttpRequest
+    :type [request]: String
+    :type [request]: String
+    :return: Redirection to the main page
     """
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -121,8 +135,10 @@ def activateAccount(request, uidb64, token):
         return redirect('home')
 
 def login(request):
-    """
-    Redirection vers la page de connexion
+    """Redirection to the login page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirection to the main page
     """
     if request.user.is_authenticated() == True:
         sweetify.info(request, 'You are already logged in as {0}'.format(request.user), button='Ok', timer=5000)
@@ -131,8 +147,10 @@ def login(request):
         return render(request, 'registration/login.html', locals())
 
 def resetPassword(request):
-    """
-    Reinitialisation par mail du mot de passe
+    """Reset password\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirection to the login page
     """
     if request.method == 'POST':
         passwordResetForm = PasswordResetForm(request.POST)
@@ -168,8 +186,10 @@ def resetPassword(request):
 
 @login_required(login_url='login')
 def profile(request):
-    """
-    Affichage de la page profil en lien avec l'utilisateur connecte
+    """Displaying profile page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Rendering profile page
     """
     user = get_object_or_404(User, username=request.user)
     context = {'user': user}
@@ -177,8 +197,10 @@ def profile(request):
 
 @login_required(login_url='login')
 def profileEditPassword(request):
-    """
-    Modification du MDP sur la page profil
+    """Changing password on the profile page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirect profile page
     """
     if request.user.has_usable_password() == False:
         messages.warning(request, 'You are connected with a third party system and cannot modify your information from this page.')
@@ -196,8 +218,10 @@ def profileEditPassword(request):
 
 @login_required(login_url='login')
 def profileEditInformation(request):
-    """
-    Modification des informations de base sur la page profil
+    """Changing basic information on the profile page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirect profile page
     """
     if request.user.has_usable_password() == False:
         messages.warning(request, 'You are connected with a third party system and cannot modify your information from this page.')
@@ -216,6 +240,11 @@ def profileEditInformation(request):
     return render(request, 'registration/profile.html', context)
 
 def home(request):
+    """Displaying profile page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Rendering home page
+    """
     try:
         news = Post.objects.latest('id')
         trends = Post.objects.order_by('-id')[1:4]
@@ -227,13 +256,20 @@ def home(request):
     return render(request, 'index.html', context)
 
 def game(request):
+    """Displaying profile page\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Rendering game page
+    """
     context = {}
     return render(request, 'game.html', context)
 
 @login_required(login_url='login')
 def alpha(request):
-    """
-    Inscription a l'ALPHA
+    """Registration at ALPHA
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Rendering Alpha page
     """
     if request.method == 'POST':
         form = GameForm(request.POST)
@@ -260,8 +296,10 @@ def alpha(request):
 
 @login_required(login_url='login')
 def beta(request):
-    """
-    Inscription a la BETA
+    """Registration at BETA
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Rendering Beta page
     """
     if request.method == 'POST':
         form = GameForm(request.POST)
@@ -287,8 +325,10 @@ def beta(request):
     return render(request, 'beta.html', context)
 
 def news(request):
-    """
-    Recuperation et gestion des posts
+    """Recovery and management of posts\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirect to news page
     """
     posts = Post.objects.order_by('-created_date', '-last_edit')
     commonTags = Post.tags.most_common()[:4]
@@ -313,16 +353,24 @@ def news(request):
     return render(request, 'news.html', context)
 
 def specificNews(request, id):
-    """
-    Recuperation d'une news specifique par son ID
+    """Recovering a specific news by its ID\n\n
+    :param [request]: Receives an HttpRequest
+    :param [id]: Receives Id linked to a post
+    :type [request]: HttpRequest
+    :type [id]: Integer
+    :return: Redirect to news page
     """
     post = get_object_or_404(Post, id=id)
     context = {'post': post}
     return render(request, 'detail.html', context)
 
 def tagged(request, id):
-    """
-    Recuperation d'une news specifique par son Tag
+    """Recovery of a specific news by its Tag\n\n
+    :param [request]: Receives an HttpRequest
+    :param [id]: Receives id linked to a post
+    :type [request]: HttpRequest
+    :type [id]: Integer
+    :return: Redirect to news page
     """
     tag = get_object_or_404(Tag, id=id)
     posts = Post.objects.filter(tags=tag)
@@ -330,8 +378,10 @@ def tagged(request, id):
     return render(request, 'news.html', context)
 
 def contact(request):
-    """
-    Gestion du formulaire de contact
+    """Management of the contact form\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirect to contact page
     """
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -352,8 +402,10 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 def newsletter(request):
-    """
-    Gestion des inscriptions a le newsletter
+    """Newsletter subscription management\n\n
+    :param [request]: Receives an HttpRequest
+    :type [request]: HttpRequest
+    :return: Redirect to newsletter page
     """
     if request.method == 'POST':
         form = NewsletterForm(request.POST)

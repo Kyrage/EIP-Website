@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ether.migrations package &mdash; EIP-Website 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ether package" href="ether.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> EIP-Website
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Presentation of the project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">app</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="ether.html">ether package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="ether.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ether.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.admin">ether.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.api">ether.api module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.apps">ether.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.forms">ether.forms module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.models">ether.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.tests">ether.tests module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.tokens">ether.tokens module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.urls">ether.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether.views">ether.views module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ether.html#module-ether">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ether.html">ether package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ether.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ether.migrations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0001_initial">ether.migrations.0001_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0002_auto_20210402_1444">ether.migrations.0002_auto_20210402_1444 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0003_auto_20210403_1216">ether.migrations.0003_auto_20210403_1216 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0004_profile_avatar">ether.migrations.0004_profile_avatar module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0005_auto_20210403_1230">ether.migrations.0005_auto_20210403_1230 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0006_auto_20210403_1236">ether.migrations.0006_auto_20210403_1236 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0007_auto_20210403_1340">ether.migrations.0007_auto_20210403_1340 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0008_auto_20210403_1350">ether.migrations.0008_auto_20210403_1350 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0009_auto_20210403_1354">ether.migrations.0009_auto_20210403_1354 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0010_auto_20210403_1400">ether.migrations.0010_auto_20210403_1400 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0011_auto_20210403_1408">ether.migrations.0011_auto_20210403_1408 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0012_auto_20210403_1514">ether.migrations.0012_auto_20210403_1514 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills">ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0014_auto_20210831_1607">ether.migrations.0014_auto_20210831_1607 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0015_auto_20210904_1032">ether.migrations.0015_auto_20210904_1032 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0016_auto_20210904_1038">ether.migrations.0016_auto_20210904_1038 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0017_auto_20210904_1053">ether.migrations.0017_auto_20210904_1053 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0018_auto_20210906_1103">ether.migrations.0018_auto_20210906_1103 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0019_userdata">ether.migrations.0019_userdata module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0020_auto_20210906_1110">ether.migrations.0020_auto_20210906_1110 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0021_auto_20210906_1125">ether.migrations.0021_auto_20210906_1125 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0022_auto_20210906_1159">ether.migrations.0022_auto_20210906_1159 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0023_auto_20210906_1233">ether.migrations.0023_auto_20210906_1233 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0024_auto_20210906_1235">ether.migrations.0024_auto_20210906_1235 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0025_auto_20210906_1238">ether.migrations.0025_auto_20210906_1238 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0026_auto_20210906_1328">ether.migrations.0026_auto_20210906_1328 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0027_auto_20220109_1149">ether.migrations.0027_auto_20220109_1149 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0028_userdata_mentoring">ether.migrations.0028_userdata_mentoring module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0029_usermatchmaking">ether.migrations.0029_usermatchmaking module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0030_usertexture">ether.migrations.0030_usertexture module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0031_auto_20220307_1240">ether.migrations.0031_auto_20220307_1240 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0032_remove_usertexture_name">ether.migrations.0032_remove_usertexture_name module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0033_rename_item_userinventory_name_and_more">ether.migrations.0033_rename_item_userinventory_name_and_more module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0034_alter_userinventory_quantity">ether.migrations.0034_alter_userinventory_quantity module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more">ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0036_shoptexture">ether.migrations.0036_shoptexture module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations.0037_remove_userfriends_name_userfriends_friends">ether.migrations.0037_remove_userfriends_name_userfriends_friends module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-ether.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.admin">ether.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.api">ether.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.apps">ether.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.forms">ether.forms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.models">ether.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.tests">ether.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.tokens">ether.tokens module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.urls">ether.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether.views">ether.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ether.html#module-ether">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EIP-Website</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">app</a> &raquo;</li>
+          <li><a href="ether.html">ether package</a> &raquo;</li>
+      <li>ether.migrations package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ether.migrations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ether-migrations-package">
+<h1>ether.migrations package<a class="headerlink" href="#ether-migrations-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-ether.migrations.0001_initial">
+<span id="ether-migrations-0001-initial-module"></span><h2>ether.migrations.0001_initial module<a class="headerlink" href="#module-ether.migrations.0001_initial" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0001_initial.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0001_initial.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0001_initial.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0001_initial.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('taggit',</span> <span class="pre">'0003_taggeditem_add_unique_index'),</span> <span class="pre">('auth',</span> <span class="pre">'__first__')]</span></em><a class="headerlink" href="#ether.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0001_initial.Migration.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#ether.migrations.0001_initial.Migration.initial" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0001_initial.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='Newsletter',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('email',</span> <span class="pre">&lt;django.db.models.fields.EmailField&gt;),</span> <span class="pre">('registered',</span> <span class="pre">&lt;django.db.models.fields.BooleanField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Newsletter'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Post',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('img',</span> <span class="pre">&lt;django.db.models.fields.files.ImageField&gt;),</span> <span class="pre">('title',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('description',</span> <span class="pre">&lt;django.db.models.fields.TextField&gt;),</span> <span class="pre">('slug',</span> <span class="pre">&lt;django.db.models.fields.SlugField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;),</span> <span class="pre">('tags',</span> <span class="pre">&lt;taggit.managers.TaggableManager&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Publication'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Game',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('alpha',</span> <span class="pre">&lt;django.db.models.fields.BooleanField&gt;),</span> <span class="pre">('beta',</span> <span class="pre">&lt;django.db.models.fields.BooleanField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Alpha</span> <span class="pre">/</span> <span class="pre">Beta'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0001_initial.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0002_auto_20210402_1444">
+<span id="ether-migrations-0002-auto-20210402-1444-module"></span><h2>ether.migrations.0002_auto_20210402_1444 module<a class="headerlink" href="#module-ether.migrations.0002_auto_20210402_1444" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0002_auto_20210402_1444.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0002_auto_20210402_1444.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0002_auto_20210402_1444.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0002_auto_20210402_1444.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0001_initial')]</span></em><a class="headerlink" href="#ether.migrations.0002_auto_20210402_1444.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0002_auto_20210402_1444.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='post',</span> <span class="pre">name='img',</span> <span class="pre">field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0002_auto_20210402_1444.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0003_auto_20210403_1216">
+<span id="ether-migrations-0003-auto-20210403-1216-module"></span><h2>ether.migrations.0003_auto_20210403_1216 module<a class="headerlink" href="#module-ether.migrations.0003_auto_20210403_1216" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0003_auto_20210403_1216.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0003_auto_20210403_1216.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0003_auto_20210403_1216.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0003_auto_20210403_1216.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0002_auto_20210402_1444')]</span></em><a class="headerlink" href="#ether.migrations.0003_auto_20210403_1216.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0003_auto_20210403_1216.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameField</span>&#160; <span class="pre">model_name='game',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='Profile',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('location',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('birthdate',</span> <span class="pre">&lt;django.db.models.fields.DateField&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.fields.related.OneToOneField&gt;)]&gt;]</span></em><a class="headerlink" href="#ether.migrations.0003_auto_20210403_1216.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0004_profile_avatar">
+<span id="ether-migrations-0004-profile-avatar-module"></span><h2>ether.migrations.0004_profile_avatar module<a class="headerlink" href="#module-ether.migrations.0004_profile_avatar" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0004_profile_avatar.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0004_profile_avatar.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0004_profile_avatar.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0004_profile_avatar.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0003_auto_20210403_1216')]</span></em><a class="headerlink" href="#ether.migrations.0004_profile_avatar.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0004_profile_avatar.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='avatar',</span> <span class="pre">field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0004_profile_avatar.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0005_auto_20210403_1230">
+<span id="ether-migrations-0005-auto-20210403-1230-module"></span><h2>ether.migrations.0005_auto_20210403_1230 module<a class="headerlink" href="#module-ether.migrations.0005_auto_20210403_1230" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0005_auto_20210403_1230.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0005_auto_20210403_1230.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0005_auto_20210403_1230.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0005_auto_20210403_1230.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0004_profile_avatar')]</span></em><a class="headerlink" href="#ether.migrations.0005_auto_20210403_1230.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0005_auto_20210403_1230.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterModelOptions</span>&#160; <span class="pre">name='profile',</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Profile'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0005_auto_20210403_1230.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0006_auto_20210403_1236">
+<span id="ether-migrations-0006-auto-20210403-1236-module"></span><h2>ether.migrations.0006_auto_20210403_1236 module<a class="headerlink" href="#module-ether.migrations.0006_auto_20210403_1236" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0006_auto_20210403_1236.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0006_auto_20210403_1236.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0006_auto_20210403_1236.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0006_auto_20210403_1236.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0005_auto_20210403_1230')]</span></em><a class="headerlink" href="#ether.migrations.0006_auto_20210403_1236.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0006_auto_20210403_1236.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='location',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0006_auto_20210403_1236.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0007_auto_20210403_1340">
+<span id="ether-migrations-0007-auto-20210403-1340-module"></span><h2>ether.migrations.0007_auto_20210403_1340 module<a class="headerlink" href="#module-ether.migrations.0007_auto_20210403_1340" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0007_auto_20210403_1340.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0007_auto_20210403_1340.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0007_auto_20210403_1340.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0007_auto_20210403_1340.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0006_auto_20210403_1236')]</span></em><a class="headerlink" href="#ether.migrations.0007_auto_20210403_1340.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0007_auto_20210403_1340.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='location',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0007_auto_20210403_1340.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0008_auto_20210403_1350">
+<span id="ether-migrations-0008-auto-20210403-1350-module"></span><h2>ether.migrations.0008_auto_20210403_1350 module<a class="headerlink" href="#module-ether.migrations.0008_auto_20210403_1350" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0008_auto_20210403_1350.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0008_auto_20210403_1350.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0008_auto_20210403_1350.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0008_auto_20210403_1350.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0007_auto_20210403_1340')]</span></em><a class="headerlink" href="#ether.migrations.0008_auto_20210403_1350.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0008_auto_20210403_1350.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='birthdate',</span> <span class="pre">field=&lt;django.db.models.fields.DateField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0008_auto_20210403_1350.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0009_auto_20210403_1354">
+<span id="ether-migrations-0009-auto-20210403-1354-module"></span><h2>ether.migrations.0009_auto_20210403_1354 module<a class="headerlink" href="#module-ether.migrations.0009_auto_20210403_1354" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0009_auto_20210403_1354.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0009_auto_20210403_1354.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0009_auto_20210403_1354.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0009_auto_20210403_1354.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0008_auto_20210403_1350')]</span></em><a class="headerlink" href="#ether.migrations.0009_auto_20210403_1354.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0009_auto_20210403_1354.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='avatar',</span> <span class="pre">field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0009_auto_20210403_1354.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0010_auto_20210403_1400">
+<span id="ether-migrations-0010-auto-20210403-1400-module"></span><h2>ether.migrations.0010_auto_20210403_1400 module<a class="headerlink" href="#module-ether.migrations.0010_auto_20210403_1400" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0010_auto_20210403_1400.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0010_auto_20210403_1400.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0010_auto_20210403_1400.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0010_auto_20210403_1400.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0009_auto_20210403_1354')]</span></em><a class="headerlink" href="#ether.migrations.0010_auto_20210403_1400.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0010_auto_20210403_1400.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='birthdate',</span> <span class="pre">field=&lt;django.db.models.fields.DateField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0010_auto_20210403_1400.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0011_auto_20210403_1408">
+<span id="ether-migrations-0011-auto-20210403-1408-module"></span><h2>ether.migrations.0011_auto_20210403_1408 module<a class="headerlink" href="#module-ether.migrations.0011_auto_20210403_1408" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0011_auto_20210403_1408.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0011_auto_20210403_1408.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0011_auto_20210403_1408.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0011_auto_20210403_1408.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0010_auto_20210403_1400')]</span></em><a class="headerlink" href="#ether.migrations.0011_auto_20210403_1408.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0011_auto_20210403_1408.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='avatar',</span> <span class="pre">field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0011_auto_20210403_1408.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0012_auto_20210403_1514">
+<span id="ether-migrations-0012-auto-20210403-1514-module"></span><h2>ether.migrations.0012_auto_20210403_1514 module<a class="headerlink" href="#module-ether.migrations.0012_auto_20210403_1514" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0012_auto_20210403_1514.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0012_auto_20210403_1514.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0012_auto_20210403_1514.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0012_auto_20210403_1514.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0011_auto_20210403_1408')]</span></em><a class="headerlink" href="#ether.migrations.0012_auto_20210403_1514.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0012_auto_20210403_1514.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='avatar',</span> <span class="pre">field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0012_auto_20210403_1514.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills">
+<span id="ether-migrations-0013-userfriends-userguild-userinventory-userposition-userskills-module"></span><h2>ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills module<a class="headerlink" href="#module-ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0012_auto_20210403_1514')]</span></em><a class="headerlink" href="#ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='UserSkills',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('cap_1',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('cap_2',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('cap_3',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('cap_4',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Skills'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserPosition',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('map',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('x',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('y',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('z',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Position'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserInventory',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('item',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('number',</span> <span class="pre">&lt;django.db.models.fields.IntegerField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Inventory'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserGuild',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('name',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Guild'}&gt;,</span> <span class="pre">&lt;CreateModel</span>&#160; <span class="pre">name='UserFriends',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('name',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('author',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Friends'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0013_userfriends_userguild_userinventory_userposition_userskills.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0014_auto_20210831_1607">
+<span id="ether-migrations-0014-auto-20210831-1607-module"></span><h2>ether.migrations.0014_auto_20210831_1607 module<a class="headerlink" href="#module-ether.migrations.0014_auto_20210831_1607" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0014_auto_20210831_1607.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0014_auto_20210831_1607.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0014_auto_20210831_1607.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0014_auto_20210831_1607.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0013_userfriends_userguild_userinventory_userposition_userskills')]</span></em><a class="headerlink" href="#ether.migrations.0014_auto_20210831_1607.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0014_auto_20210831_1607.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='author',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='userskills',</span> <span class="pre">unique_together={('author',)}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0014_auto_20210831_1607.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0015_auto_20210904_1032">
+<span id="ether-migrations-0015-auto-20210904-1032-module"></span><h2>ether.migrations.0015_auto_20210904_1032 module<a class="headerlink" href="#module-ether.migrations.0015_auto_20210904_1032" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0015_auto_20210904_1032.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0015_auto_20210904_1032.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0015_auto_20210904_1032.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0015_auto_20210904_1032.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0014_auto_20210831_1607')]</span></em><a class="headerlink" href="#ether.migrations.0015_auto_20210904_1032.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0015_auto_20210904_1032.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='author',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='userskills',</span> <span class="pre">unique_together={('cap_1',</span> <span class="pre">'cap_2',</span> <span class="pre">'cap_3',</span> <span class="pre">'cap_4')}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0015_auto_20210904_1032.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0016_auto_20210904_1038">
+<span id="ether-migrations-0016-auto-20210904-1038-module"></span><h2>ether.migrations.0016_auto_20210904_1038 module<a class="headerlink" href="#module-ether.migrations.0016_auto_20210904_1038" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0016_auto_20210904_1038.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0016_auto_20210904_1038.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0016_auto_20210904_1038.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0016_auto_20210904_1038.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0015_auto_20210904_1032')]</span></em><a class="headerlink" href="#ether.migrations.0016_auto_20210904_1038.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0016_auto_20210904_1038.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='userskills',</span> <span class="pre">unique_together=set()&gt;]</span></em><a class="headerlink" href="#ether.migrations.0016_auto_20210904_1038.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0017_auto_20210904_1053">
+<span id="ether-migrations-0017-auto-20210904-1053-module"></span><h2>ether.migrations.0017_auto_20210904_1053 module<a class="headerlink" href="#module-ether.migrations.0017_auto_20210904_1053" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0017_auto_20210904_1053.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0017_auto_20210904_1053.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0017_auto_20210904_1053.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0017_auto_20210904_1053.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0016_auto_20210904_1038')]</span></em><a class="headerlink" href="#ether.migrations.0017_auto_20210904_1053.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0017_auto_20210904_1053.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameModel</span>&#160; <span class="pre">old_name='UserPosition',</span> <span class="pre">new_name='UserPositions'&gt;]</span></em><a class="headerlink" href="#ether.migrations.0017_auto_20210904_1053.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0018_auto_20210906_1103">
+<span id="ether-migrations-0018-auto-20210906-1103-module"></span><h2>ether.migrations.0018_auto_20210906_1103 module<a class="headerlink" href="#module-ether.migrations.0018_auto_20210906_1103" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0018_auto_20210906_1103.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0018_auto_20210906_1103.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0018_auto_20210906_1103.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0018_auto_20210906_1103.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0017_auto_20210904_1053')]</span></em><a class="headerlink" href="#ether.migrations.0018_auto_20210906_1103.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0018_auto_20210906_1103.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameField</span>&#160; <span class="pre">model_name='userfriends',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;,</span> <span class="pre">&lt;RenameField</span>&#160; <span class="pre">model_name='userguild',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;,</span> <span class="pre">&lt;RenameField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;,</span> <span class="pre">&lt;RenameField</span>&#160; <span class="pre">model_name='userpositions',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;,</span> <span class="pre">&lt;RenameField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">old_name='author',</span> <span class="pre">new_name='user'&gt;]</span></em><a class="headerlink" href="#ether.migrations.0018_auto_20210906_1103.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0019_userdata">
+<span id="ether-migrations-0019-userdata-module"></span><h2>ether.migrations.0019_userdata module<a class="headerlink" href="#module-ether.migrations.0019_userdata" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0019_userdata.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0019_userdata.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0019_userdata.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0019_userdata.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0018_auto_20210906_1103')]</span></em><a class="headerlink" href="#ether.migrations.0019_userdata.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0019_userdata.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='UserData',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('level',</span> <span class="pre">&lt;django.db.models.fields.IntegerField&gt;),</span> <span class="pre">('gold',</span> <span class="pre">&lt;django.db.models.fields.IntegerField&gt;),</span> <span class="pre">('gem',</span> <span class="pre">&lt;django.db.models.fields.IntegerField&gt;),</span> <span class="pre">('created_date',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('last_edit',</span> <span class="pre">&lt;django.db.models.fields.DateTimeField&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.fields.related.OneToOneField&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'UserData'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0019_userdata.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0020_auto_20210906_1110">
+<span id="ether-migrations-0020-auto-20210906-1110-module"></span><h2>ether.migrations.0020_auto_20210906_1110 module<a class="headerlink" href="#module-ether.migrations.0020_auto_20210906_1110" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0020_auto_20210906_1110.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0020_auto_20210906_1110.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0020_auto_20210906_1110.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0020_auto_20210906_1110.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0019_userdata')]</span></em><a class="headerlink" href="#ether.migrations.0020_auto_20210906_1110.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0020_auto_20210906_1110.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userfriends',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userguild',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userpositions',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0020_auto_20210906_1110.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0021_auto_20210906_1125">
+<span id="ether-migrations-0021-auto-20210906-1125-module"></span><h2>ether.migrations.0021_auto_20210906_1125 module<a class="headerlink" href="#module-ether.migrations.0021_auto_20210906_1125" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0021_auto_20210906_1125.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0021_auto_20210906_1125.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0021_auto_20210906_1125.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0021_auto_20210906_1125.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0020_auto_20210906_1110')]</span></em><a class="headerlink" href="#ether.migrations.0021_auto_20210906_1125.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0021_auto_20210906_1125.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userfriends',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userpositions',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0021_auto_20210906_1125.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0022_auto_20210906_1159">
+<span id="ether-migrations-0022-auto-20210906-1159-module"></span><h2>ether.migrations.0022_auto_20210906_1159 module<a class="headerlink" href="#module-ether.migrations.0022_auto_20210906_1159" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0022_auto_20210906_1159.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0022_auto_20210906_1159.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0022_auto_20210906_1159.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0022_auto_20210906_1159.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0021_auto_20210906_1125')]</span></em><a class="headerlink" href="#ether.migrations.0022_auto_20210906_1159.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0022_auto_20210906_1159.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterModelOptions</span>&#160; <span class="pre">name='userdata',</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Data'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0022_auto_20210906_1159.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0023_auto_20210906_1233">
+<span id="ether-migrations-0023-auto-20210906-1233-module"></span><h2>ether.migrations.0023_auto_20210906_1233 module<a class="headerlink" href="#module-ether.migrations.0023_auto_20210906_1233" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0023_auto_20210906_1233.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0023_auto_20210906_1233.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0023_auto_20210906_1233.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0023_auto_20210906_1233.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0022_auto_20210906_1159')]</span></em><a class="headerlink" href="#ether.migrations.0023_auto_20210906_1233.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0023_auto_20210906_1233.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='userdata',</span> <span class="pre">unique_together={('user',)}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0023_auto_20210906_1233.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0024_auto_20210906_1235">
+<span id="ether-migrations-0024-auto-20210906-1235-module"></span><h2>ether.migrations.0024_auto_20210906_1235 module<a class="headerlink" href="#module-ether.migrations.0024_auto_20210906_1235" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0024_auto_20210906_1235.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0024_auto_20210906_1235.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0024_auto_20210906_1235.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0024_auto_20210906_1235.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0023_auto_20210906_1233')]</span></em><a class="headerlink" href="#ether.migrations.0024_auto_20210906_1235.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0024_auto_20210906_1235.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterUniqueTogether</span>&#160; <span class="pre">name='userdata',</span> <span class="pre">unique_together=set()&gt;]</span></em><a class="headerlink" href="#ether.migrations.0024_auto_20210906_1235.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0025_auto_20210906_1238">
+<span id="ether-migrations-0025-auto-20210906-1238-module"></span><h2>ether.migrations.0025_auto_20210906_1238 module<a class="headerlink" href="#module-ether.migrations.0025_auto_20210906_1238" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0025_auto_20210906_1238.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0025_auto_20210906_1238.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0025_auto_20210906_1238.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0025_auto_20210906_1238.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0024_auto_20210906_1235')]</span></em><a class="headerlink" href="#ether.migrations.0025_auto_20210906_1238.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0025_auto_20210906_1238.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userguild',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0025_auto_20210906_1238.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0026_auto_20210906_1328">
+<span id="ether-migrations-0026-auto-20210906-1328-module"></span><h2>ether.migrations.0026_auto_20210906_1328 module<a class="headerlink" href="#module-ether.migrations.0026_auto_20210906_1328" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0026_auto_20210906_1328.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0026_auto_20210906_1328.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0026_auto_20210906_1328.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0026_auto_20210906_1328.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0025_auto_20210906_1238')]</span></em><a class="headerlink" href="#ether.migrations.0026_auto_20210906_1328.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0026_auto_20210906_1328.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='profile',</span> <span class="pre">name='user',</span> <span class="pre">field=&lt;django.db.models.fields.related.OneToOneField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0026_auto_20210906_1328.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0027_auto_20220109_1149">
+<span id="ether-migrations-0027-auto-20220109-1149-module"></span><h2>ether.migrations.0027_auto_20220109_1149 module<a class="headerlink" href="#module-ether.migrations.0027_auto_20220109_1149" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0027_auto_20220109_1149.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0027_auto_20220109_1149.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0027_auto_20220109_1149.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0027_auto_20220109_1149.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0026_auto_20210906_1328')]</span></em><a class="headerlink" href="#ether.migrations.0027_auto_20220109_1149.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0027_auto_20220109_1149.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RemoveField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='gem'&gt;,</span> <span class="pre">&lt;RemoveField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='gold'&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='cash',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='crystal',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='hasDoneTutorial',</span> <span class="pre">field=&lt;django.db.models.fields.BooleanField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='maxTextureSlot',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='name',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='textureSlot',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;,</span> <span class="pre">&lt;AlterField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='level',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0027_auto_20220109_1149.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0028_userdata_mentoring">
+<span id="ether-migrations-0028-userdata-mentoring-module"></span><h2>ether.migrations.0028_userdata_mentoring module<a class="headerlink" href="#module-ether.migrations.0028_userdata_mentoring" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0028_userdata_mentoring.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0028_userdata_mentoring.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0028_userdata_mentoring.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0028_userdata_mentoring.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0027_auto_20220109_1149')]</span></em><a class="headerlink" href="#ether.migrations.0028_userdata_mentoring.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0028_userdata_mentoring.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AddField</span>&#160; <span class="pre">model_name='userdata',</span> <span class="pre">name='mentoring',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0028_userdata_mentoring.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0029_usermatchmaking">
+<span id="ether-migrations-0029-usermatchmaking-module"></span><h2>ether.migrations.0029_usermatchmaking module<a class="headerlink" href="#module-ether.migrations.0029_usermatchmaking" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0029_usermatchmaking.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0029_usermatchmaking.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0029_usermatchmaking.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0029_usermatchmaking.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0028_userdata_mentoring')]</span></em><a class="headerlink" href="#ether.migrations.0029_usermatchmaking.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0029_usermatchmaking.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='UserMatchmaking',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Matchmaking'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0029_usermatchmaking.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0030_usertexture">
+<span id="ether-migrations-0030-usertexture-module"></span><h2>ether.migrations.0030_usertexture module<a class="headerlink" href="#module-ether.migrations.0030_usertexture" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0030_usertexture.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0030_usertexture.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0030_usertexture.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0030_usertexture.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0029_usermatchmaking')]</span></em><a class="headerlink" href="#ether.migrations.0030_usertexture.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0030_usertexture.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='UserTexture',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('name',</span> <span class="pre">&lt;django.db.models.fields.CharField&gt;),</span> <span class="pre">('texture',</span> <span class="pre">&lt;django.db.models.fields.BinaryField&gt;),</span> <span class="pre">('user',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Textures'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0030_usertexture.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0031_auto_20220307_1240">
+<span id="ether-migrations-0031-auto-20220307-1240-module"></span><h2>ether.migrations.0031_auto_20220307_1240 module<a class="headerlink" href="#module-ether.migrations.0031_auto_20220307_1240" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0031_auto_20220307_1240.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0031_auto_20220307_1240.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0031_auto_20220307_1240.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0031_auto_20220307_1240.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0030_usertexture')]</span></em><a class="headerlink" href="#ether.migrations.0031_auto_20220307_1240.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0031_auto_20220307_1240.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='usertexture',</span> <span class="pre">name='texture',</span> <span class="pre">field=&lt;django.db.models.fields.BinaryField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0031_auto_20220307_1240.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0032_remove_usertexture_name">
+<span id="ether-migrations-0032-remove-usertexture-name-module"></span><h2>ether.migrations.0032_remove_usertexture_name module<a class="headerlink" href="#module-ether.migrations.0032_remove_usertexture_name" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0032_remove_usertexture_name.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0032_remove_usertexture_name.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0032_remove_usertexture_name.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0032_remove_usertexture_name.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0031_auto_20220307_1240')]</span></em><a class="headerlink" href="#ether.migrations.0032_remove_usertexture_name.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0032_remove_usertexture_name.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RemoveField</span>&#160; <span class="pre">model_name='usertexture',</span> <span class="pre">name='name'&gt;]</span></em><a class="headerlink" href="#ether.migrations.0032_remove_usertexture_name.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0033_rename_item_userinventory_name_and_more">
+<span id="ether-migrations-0033-rename-item-userinventory-name-and-more-module"></span><h2>ether.migrations.0033_rename_item_userinventory_name_and_more module<a class="headerlink" href="#module-ether.migrations.0033_rename_item_userinventory_name_and_more" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0033_rename_item_userinventory_name_and_more.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0033_rename_item_userinventory_name_and_more.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0033_rename_item_userinventory_name_and_more.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0033_rename_item_userinventory_name_and_more.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0032_remove_usertexture_name')]</span></em><a class="headerlink" href="#ether.migrations.0033_rename_item_userinventory_name_and_more.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0033_rename_item_userinventory_name_and_more.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">old_name='item',</span> <span class="pre">new_name='name'&gt;,</span> <span class="pre">&lt;RenameField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">old_name='number',</span> <span class="pre">new_name='quantity'&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">name='_id',</span> <span class="pre">field=&lt;django.db.models.fields.PositiveIntegerField&gt;,</span> <span class="pre">preserve_default=False&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">name='comment',</span> <span class="pre">field=&lt;django.db.models.fields.CharField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0033_rename_item_userinventory_name_and_more.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0034_alter_userinventory_quantity">
+<span id="ether-migrations-0034-alter-userinventory-quantity-module"></span><h2>ether.migrations.0034_alter_userinventory_quantity module<a class="headerlink" href="#module-ether.migrations.0034_alter_userinventory_quantity" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0034_alter_userinventory_quantity.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0034_alter_userinventory_quantity.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0034_alter_userinventory_quantity.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0034_alter_userinventory_quantity.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0033_rename_item_userinventory_name_and_more')]</span></em><a class="headerlink" href="#ether.migrations.0034_alter_userinventory_quantity.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0034_alter_userinventory_quantity.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;AlterField</span>&#160; <span class="pre">model_name='userinventory',</span> <span class="pre">name='quantity',</span> <span class="pre">field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0034_alter_userinventory_quantity.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more">
+<span id="ether-migrations-0035-rename-cap-1-userskills-name-remove-userskills-cap-2-and-more-module"></span><h2>ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more module<a class="headerlink" href="#module-ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('ether',</span> <span class="pre">'0034_alter_userinventory_quantity')]</span></em><a class="headerlink" href="#ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RenameField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">old_name='cap_1',</span> <span class="pre">new_name='name'&gt;,</span> <span class="pre">&lt;RemoveField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='cap_2'&gt;,</span> <span class="pre">&lt;RemoveField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='cap_3'&gt;,</span> <span class="pre">&lt;RemoveField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='cap_4'&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='_id',</span> <span class="pre">field=&lt;django.db.models.fields.PositiveIntegerField&gt;,</span> <span class="pre">preserve_default=False&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='_parentId',</span> <span class="pre">field=&lt;django.db.models.fields.PositiveIntegerField&gt;,</span> <span class="pre">preserve_default=False&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='equipped',</span> <span class="pre">field=&lt;django.db.models.fields.PositiveIntegerField&gt;&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userskills',</span> <span class="pre">name='level',</span> <span class="pre">field=&lt;django.db.models.fields.PositiveIntegerField&gt;&gt;,</span> <span class="pre">&lt;DeleteModel</span>&#160; <span class="pre">name='UserPositions'&gt;]</span></em><a class="headerlink" href="#ether.migrations.0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0036_shoptexture">
+<span id="ether-migrations-0036-shoptexture-module"></span><h2>ether.migrations.0036_shoptexture module<a class="headerlink" href="#module-ether.migrations.0036_shoptexture" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0036_shoptexture.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0036_shoptexture.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0036_shoptexture.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0036_shoptexture.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0035_rename_cap_1_userskills_name_remove_userskills_cap_2_and_more')]</span></em><a class="headerlink" href="#ether.migrations.0036_shoptexture.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0036_shoptexture.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;CreateModel</span>&#160; <span class="pre">name='ShopTexture',</span> <span class="pre">fields=[('id',</span> <span class="pre">&lt;django.db.models.fields.AutoField&gt;),</span> <span class="pre">('texture',</span> <span class="pre">&lt;django.db.models.fields.BinaryField&gt;),</span> <span class="pre">('price',</span> <span class="pre">&lt;django.db.models.fields.PositiveIntegerField&gt;),</span> <span class="pre">('seller',</span> <span class="pre">&lt;django.db.models.fields.related.ForeignKey&gt;)],</span> <span class="pre">options={'verbose_name_plural':</span> <span class="pre">'Commutary</span> <span class="pre">Textures</span> <span class="pre">Shop'}&gt;]</span></em><a class="headerlink" href="#ether.migrations.0036_shoptexture.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations.0037_remove_userfriends_name_userfriends_friends">
+<span id="ether-migrations-0037-remove-userfriends-name-userfriends-friends-module"></span><h2>ether.migrations.0037_remove_userfriends_name_userfriends_friends module<a class="headerlink" href="#module-ether.migrations.0037_remove_userfriends_name_userfriends_friends" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ether.migrations.0037_remove_userfriends_name_userfriends_friends.</span></span><span class="sig-name descname"><span class="pre">Migration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Migration</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration.dependencies">
+<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('auth',</span> <span class="pre">'__first__'),</span> <span class="pre">('ether',</span> <span class="pre">'0036_shoptexture')]</span></em><a class="headerlink" href="#ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration.dependencies" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;RemoveField</span>&#160; <span class="pre">model_name='userfriends',</span> <span class="pre">name='name'&gt;,</span> <span class="pre">&lt;AddField</span>&#160; <span class="pre">model_name='userfriends',</span> <span class="pre">name='friends',</span> <span class="pre">field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</span></em><a class="headerlink" href="#ether.migrations.0037_remove_userfriends_name_userfriends_friends.Migration.operations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ether.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ether.migrations" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ether.html" class="btn btn-neutral float-left" title="ether package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Tristan M.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
