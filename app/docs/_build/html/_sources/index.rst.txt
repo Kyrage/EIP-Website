@@ -15,6 +15,7 @@ Welcome to ProjecEther website documentation!
    modules
    core
    ether
+   api
 
 Indices and tables
 ==================
