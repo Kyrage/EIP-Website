@@ -180,8 +180,8 @@ def resetPassword(request):
             else:
                 sweetify.error(request, 'No user is linked to this email.', button='Ok', timer=5000)
     else:
-        form = PasswordResetForm()
-    context = {'form': form}
+        passwordResetForm = PasswordResetForm()
+    context = {'form': passwordResetForm}
     return render(request, 'registration/login.html', context)
 
 @login_required(login_url='login')

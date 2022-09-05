@@ -202,3 +202,5 @@ EMAIL_USE_TLS = True
 
 DOCS_ROOT = os.path.join(BASE_DIR, './docs/_build/html')
 DOCS_ACCESS = 'public'
+
+AUTHENTICATION_BACKENDS = ['core.backends.CustomUserModelBackend']

@@ -257,6 +257,7 @@ class UserMatchmakingViewSet(viewsets.ModelViewSet):
     serializer_class = UserMatchmakingSerializer
 
 class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(allow_null=True)
     permission_classes = (IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     class Meta:
@@ -266,10 +267,18 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
 
     @csrf_exempt
     def create(self, validated_data):
-        user = super(UserTextureSerializer, self).create(validated_data)
-        user.user = self.context.get("request").user
-        user.save()
-        return (user)
+        try:
+            obj = UserTexture.objects.get(user=self.context.get("request").user, id=validated_data['id'])
+            obj.texture = validated_data['texture']
+            obj.save()
+            return (obj)
+        except:
+            if validated_data['id']:
+                validated_data['id'] = None
+            user = super(UserTextureSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
 
 class UserTextureViewSet(viewsets.ModelViewSet):
     queryset = UserTexture.objects.all()
