@@ -95,6 +95,8 @@ class UserData(models.Model):
     level = models.IntegerField(default=1)
     crystal = models.IntegerField(default=1000)
     cash = models.IntegerField(default=1000)
+    mentoring = models.IntegerField(default=0)
+    passif = models.CharField(max_length=25, blank=False, null=True)
     mentoring = models.IntegerField(default=1000)
     textureSlot = models.IntegerField(default=2)
     maxTextureSlot = models.IntegerField(default=10)

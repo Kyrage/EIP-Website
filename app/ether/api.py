@@ -84,7 +84,7 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = UserData
-        fields = ['user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
+        fields = ['user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'passif', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
@@ -95,6 +95,7 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
             obj.crystal = validated_data['crystal']
             obj.cash = validated_data['cash']
             obj.mentoring = validated_data['mentoring']
+            obj.passif = validated_data['passif']
             obj.textureSlot = validated_data['textureSlot']
             obj.maxTextureSlot = validated_data['maxTextureSlot']
             obj.hasDoneTutorial = validated_data['hasDoneTutorial']
