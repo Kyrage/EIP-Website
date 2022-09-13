@@ -183,12 +183,29 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['user', 'friends']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
+    def create(self, validated_data):
+        try:
+            obj = get_object_or_404(UserFriends, user=self.context.get("request").user)
+            if validated_data['friends']:
+                for x in validated_data['friends']:
+                    if x in obj.friends.all():
+                        obj.remove_friend(User.objects.get(username=x))
+                    else:
+                        obj.add_friend(User.objects.get(username=x))
+            obj.save()
+            return (obj)
+        except:
+            user = super(UserFriendsSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
+
 class UserFriendsViewSet(viewsets.ModelViewSet):
     serializer_class = UserFriendsSerializer
 
     def get_queryset(self):
         user = self.request.user
-        UserFriends.objects.get(user=user).add_friend(User.objects.get(username='adminTest'))
+        #UserFriends.objects.get(user=user).add_friend(User.objects.get(username='adminTest'))
         return UserFriends.objects.all().filter(user=user)
 
 class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
