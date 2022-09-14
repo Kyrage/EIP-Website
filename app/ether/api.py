@@ -244,7 +244,7 @@ class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserGuild
-        fields = ['url', 'user', 'name']
+        fields = ['user', 'name']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
@@ -260,8 +260,12 @@ class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
             return (user)
 
 class UserGuildViewSet(viewsets.ModelViewSet):
-    queryset = UserGuild.objects.all()
+    #queryset = UserGuild.objects.all()
     serializer_class = UserGuildSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserGuild.objects.all().filter(user=user)
 
 class UserMatchmakingSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)

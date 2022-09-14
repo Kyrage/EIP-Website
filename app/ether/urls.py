@@ -1,3 +1,4 @@
+from email.mime import base
 from rest_framework.authtoken.views import obtain_auth_token
 from django.urls import path, include
 from rest_framework import routers
@@ -35,7 +36,7 @@ router.register('users_data', api.UserDataViewSet, basename='users_data')
 router.register('users_skills', api.UserSkillsViewSet, basename='users_skills')
 router.register('users_inventory', api.UserInventoryViewSet, basename='users_inventory')
 router.register('users_friends', api.UserFriendsViewSet, basename='users_friends')
-#router.register('users_guild', api.UserGuildViewSet)
+router.register('users_guild', api.UserGuildViewSet, basename='users_guild')
 #router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
 router.register('game/users_texture', api.UserTextureViewSet)
 router.register('shop/textures', api.CommutaryTextureViewSet, basename='shop_textures')
