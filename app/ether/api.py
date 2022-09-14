@@ -89,16 +89,47 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         try:
-            obj = get_object_or_404(UserData, user=self.context.get("request").user)
-            obj.name = self.context.get("request").user.username
-            obj.level = validated_data['level']
-            obj.crystal = validated_data['crystal']
-            obj.cash = validated_data['cash']
-            obj.mentoring = validated_data['mentoring']
-            obj.passif = validated_data['passif']
-            obj.textureSlot = validated_data['textureSlot']
-            obj.maxTextureSlot = validated_data['maxTextureSlot']
-            obj.hasDoneTutorial = validated_data['hasDoneTutorial']
+            obj = get_object_or_404(UserData, user=self.context.get("request").user, name=validated_data['name'])
+            try:
+                if validated_data['level']:
+                    obj.level = validated_data['level']
+            except:
+                pass
+            try:
+                if validated_data['crystal']:
+                    obj.crystal = validated_data['crystal']
+            except:
+                pass
+            try:
+                if validated_data['cash']:
+                    obj.cash = validated_data['cash']
+            except:
+                pass
+            try:
+                if validated_data['mentoring']:
+                    obj.mentoring = validated_data['mentoring']
+            except:
+                pass
+            try:
+                if validated_data['passif']:
+                    obj.passif = validated_data['passif']
+            except:
+                pass
+            try:
+                if validated_data['textureSlot']:
+                    obj.textureSlot = validated_data['textureSlot']
+            except:
+                pass
+            try:
+                if validated_data['maxTextureSlot']:
+                    obj.maxTextureSlot = validated_data['maxTextureSlot']
+            except:
+                pass
+            try:
+                if validated_data['hasDoneTutorial']:
+                    obj.hasDoneTutorial = validated_data['hasDoneTutorial']
+            except:
+                pass
             obj.save()
             return (obj)
         except:
