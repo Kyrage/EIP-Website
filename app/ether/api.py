@@ -310,7 +310,7 @@ class UserMatchmakingViewSet(viewsets.ModelViewSet):
     serializer_class = UserMatchmakingSerializer
 
 class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.IntegerField(allow_null=True)
+    id = serializers.IntegerField(allow_null=True, required=False)
     permission_classes = (IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     class Meta:
@@ -326,9 +326,7 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
             obj.save()
             return (obj)
         except:
-            if validated_data['id']:
-                validated_data['id'] = None
-            user = super(UserTextureSerializer, self).create(validated_data)
+            user = super(UserTextureSerializer, self).create({ 'texture': validated_data['texture'] })
             user.user = self.context.get("request").user
             user.save()
             return (user)
