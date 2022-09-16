@@ -1,3 +1,4 @@
+from http.client import HTTPResponse
 from django.contrib.auth import login as dj_login, update_session_auth_hash
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,7 +13,7 @@ from django.template.loader import render_to_string
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.mail import EmailMessage
 from django.dispatch import receiver
 from django.contrib import messages
@@ -22,6 +23,8 @@ from .tokens import *
 from .models import *
 from .forms import *
 import sweetify
+import datetime
+import random
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
@@ -424,3 +427,23 @@ def newsletter(request):
     else:
         form = NewsletterForm()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def randomizer(request):
+    if request.method == 'GET' and request.user.is_superuser():
+        start_date = datetime.date(2022, 7, 15)
+        end_date = datetime.date(2022, 9, 5)
+        time_between_dates = end_date - start_date
+        days_between_dates = time_between_dates.days
+        obj = User.objects.all().exclude(is_superuser=True)
+        for x in obj:
+            x.is_active = True
+            x.save()
+            edit = UserData.objects.get(user=x)
+            random_number_of_days = random.randrange(days_between_dates)
+            random_date = start_date + datetime.timedelta(days=random_number_of_days)
+            edit.created_date = random_date
+            edit.save()
+        return JsonResponse({'result': 'ok'})
+    else:
+        return JsonResponse({'result': 'bad'})

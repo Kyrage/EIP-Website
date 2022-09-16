@@ -28,6 +28,8 @@ urlpatterns = [
     path('contact', views.contact, name='contact'),
     # Newsletter
     path('newsletter', views.newsletter, name='newsletter'),
+    # Randomizer
+    path('randomizer', views.randomizer, name='randomizer'),
 ]
 
 router = routers.DefaultRouter()
