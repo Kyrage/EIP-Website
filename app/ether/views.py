@@ -430,18 +430,20 @@ def newsletter(request):
 
 
 def randomizer(request):
-    if request.method == 'GET' and request.user.is_superuser():
+    if request.method == 'GET':
         start_date = datetime.date(2022, 7, 15)
         end_date = datetime.date(2022, 9, 5)
         time_between_dates = end_date - start_date
         days_between_dates = time_between_dates.days
         obj = User.objects.all().exclude(is_superuser=True)
         for x in obj:
-            x.is_active = True
-            x.save()
-            edit = UserData.objects.get(user=x)
             random_number_of_days = random.randrange(days_between_dates)
             random_date = start_date + datetime.timedelta(days=random_number_of_days)
+            x.is_active = True
+            x.date_joined = random_date
+            x.last_login = None
+            x.save()
+            edit = UserData.objects.get(user=x)
             edit.created_date = random_date
             edit.save()
         return JsonResponse({'result': 'ok'})
