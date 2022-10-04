@@ -186,7 +186,7 @@ class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         try:
-            obj = get_object_or_404(UserInventory, user=self.context.get("request").user, name=validated_data['name'])
+            obj = get_object_or_404(UserInventory, user=self.context.get("request").user, _id=validated_data['_id'])
             obj.quantity = validated_data['quantity']
             obj.save()
             return (obj)
