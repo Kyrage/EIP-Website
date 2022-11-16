@@ -207,15 +207,31 @@ class UserInventoryViewSet(viewsets.ModelViewSet):
 class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     user = serializers.SerializerMethodField()
+    friends_username = serializers.SerializerMethodField()
+    all_users = serializers.SerializerMethodField()
+
 
     def get_user(self, obj):
-      return obj.user.username
+        return obj.user.username
+
+    def get_friends_username(self, obj):
+        user = self.context.get("request").user
+        friend = UserFriends.objects.all().filter(user=user).order_by().values('friends__username')
+        friend.exclude(friends__username=user.username)
+        data = [obj['friends__username'] for obj in friend]
+        return data
+    
+    def get_all_users(self, obj):
+        users = User.objects.all().values('username', 'id')
+        return users
+
     class Meta:
         model = UserFriends
-        fields = ['user', 'friends']
+        fields = ['user', 'friends', 'friends_username', 'all_users']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
+        print(validated_data)
         try:
             obj = get_object_or_404(UserFriends, user=self.context.get("request").user)
             if validated_data['friends']:
@@ -227,18 +243,21 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
             obj.save()
             return (obj)
         except:
-            user = super(UserFriendsSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.save()
-            return (user)
+            if UserFriends.objects.filter(user=self.context.get("request").user).exists():
+                return UserFriends.objects.filter(user=self.context.get("request").user)
+            else:
+                user = super(UserFriendsSerializer, self).create(validated_data)
+                user.user = self.context.get("request").user
+                user.save()
+                return (user)
 
 class UserFriendsViewSet(viewsets.ModelViewSet):
     serializer_class = UserFriendsSerializer
-
     def get_queryset(self):
         user = self.request.user
-        #UserFriends.objects.get(user=user).add_friend(User.objects.get(username='adminTest'))
         return UserFriends.objects.all().filter(user=user)
+
+
 
 class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
@@ -362,3 +381,47 @@ class CommutaryTextureViewSet(viewsets.ModelViewSet):
         user = self.request.user
         queryset = ShopTexture.objects.all()
         return queryset.exclude(seller=user)
+
+class UserDungeonsSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    class Meta:
+        model = UserDungeons
+        fields = ['user', 'id', 'data']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    @csrf_exempt
+    def create(self, validated_data):
+        if UserDungeons.objects.filter(user=self.context.get("request").user).exists():
+            obj = UserDungeons.objects.get(user=self.context.get("request").user)
+            obj.data = validated_data['data']
+            obj.save()
+            return (obj)
+        else:
+            user = super(UserDungeonsSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
+
+class UserDungeonsViewSet(viewsets.ModelViewSet):
+    serializer_class = UserDungeonsSerializer
+    #filter_backends = [DjangoFilterBackend]
+    #filterset_class = UserDungeons
+
+    def get_queryset(self):
+        user = self.request.user
+        return UserDungeons.objects.all().filter(user=user)
+
+class DeleteUserDungeonsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+class DeleteUserDungeonsViewSet(viewsets.ModelViewSet):
+    queryset = UserDungeons.objects.all()
+    serializer_class = DeleteUserDungeonsSerializer
+    permission_classes = (IsAuthenticated,)
+    http_method_names = ['delete', ]
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        return super(DeleteUserDungeonsViewSet, self).destroy(request, pk, *args, **kwargs)

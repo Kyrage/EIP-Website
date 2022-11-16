@@ -251,3 +251,13 @@ class ShopTexture(models.Model):
         if self.texture:
             return mark_safe('<img src="data:image;base64, {}" width="100" height="100" />'.format(b64encode(self.texture).decode('utf-8')))
         return ""
+
+class UserDungeons(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    data = models.JSONField()
+
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        verbose_name_plural = 'User Dungeons'
