@@ -28,7 +28,9 @@ def initToken(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
         UserData.objects.create(user=instance)
+        UserFriends.objects.create(user=instance)
 
+# --> FILTER
 class UserFilterData(FilterSet):
     username = CharFilter(field_name='user__username', lookup_expr='iexact')
 
@@ -50,6 +52,7 @@ class ShopFilterTexture(FilterSet):
         fields = ('username',)
         model = ShopTexture
 
+# <-- END FILTER
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
@@ -76,15 +79,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return (instance)
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(username=username)
+        return queryset
+
+# ------------- #
 
 class UserDataSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
 
     class Meta:
         model = UserData
-        fields = ['user', 'name', 'level', 'crystal', 'cash', 'mentoring', 'passif', 'textureSlot', 'maxTextureSlot', 'hasDoneTutorial']
+        exclude = ('url', 'user')
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
@@ -130,7 +142,7 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
                     obj.hasDoneTutorial = validated_data['hasDoneTutorial']
             except:
                 pass
-            obj.save()
+            obj.edit()
             return (obj)
         except:
             user = super(UserDataSerializer, self).create(validated_data)
@@ -140,20 +152,19 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
             return (user)
 
 class UserDataViewSet(viewsets.ModelViewSet):
-    #queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
-    #filter_backends = [DjangoFilterBackend]
-    #filterset_class = UserFilterData
 
     def get_queryset(self):
         user = self.request.user
-        return UserData.objects.all().filter(user=user)
+        return UserData.objects.filter(user=user)
+
+# ------------- #
 
 class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserSkills
-        fields = ['_id', '_parentId', 'name', 'level', 'equipped']
+        exclude = ('url', 'user')
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
@@ -161,58 +172,60 @@ class UserSkillsSerializer(serializers.HyperlinkedModelSerializer):
             obj = get_object_or_404(UserSkills, user=self.context.get("request").user, name=validated_data['name'])
             obj.level = validated_data['level']
             obj.equipped = validated_data['equipped']
-            obj.save()
-            return (obj)
+            obj.edit()
+            return obj
         except:
             user = super(UserSkillsSerializer, self).create(validated_data)
             user.user = self.context.get("request").user
             user.save()
-            return (user)
+            return user
 
 class UserSkillsViewSet(viewsets.ModelViewSet):
-    #queryset = UserSkills.objects.all()
     serializer_class = UserSkillsSerializer
 
     def get_queryset(self):
         user = self.request.user
-        return UserSkills.objects.all().filter(user=user)
+        return UserSkills.objects.filter(user=user)
+
+# ------------- #
 
 class UserInventorySerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
     class Meta:
         model = UserInventory
-        fields = ['_id', 'name', 'quantity', 'comment']
+        exclude = ('url', 'user')
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
         try:
             obj = get_object_or_404(UserInventory, user=self.context.get("request").user, _id=validated_data['_id'])
             obj.quantity = validated_data['quantity']
-            obj.save()
-            return (obj)
+            obj.edit()
+            return obj
         except:
             user = super(UserInventorySerializer, self).create(validated_data)
             user.user = self.context.get("request").user
             user.save()
-            return (user)
+            return user
 
 class UserInventoryViewSet(viewsets.ModelViewSet):
-    #queryset = UserInventory.objects.all()
     serializer_class = UserInventorySerializer
 
     def get_queryset(self):
         user = self.request.user
-        return UserInventory.objects.all().filter(user=user)
+        return UserInventory.objects.filter(user=user)
+
+# ------------- #
 
 class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
-    user = serializers.SerializerMethodField()
+    user_username = serializers.SerializerMethodField()
     friends_username = serializers.SerializerMethodField()
     all_users = serializers.SerializerMethodField()
 
 
-    def get_user(self, obj):
-        return obj.user.username
+    def get_user_username(self, obj):
+        return self.context.get("request").user.username
 
     def get_friends_username(self, obj):
         user = self.context.get("request").user
@@ -220,18 +233,16 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
         friend.exclude(friends__username=user.username)
         data = [obj['friends__username'] for obj in friend]
         return data
-    
+
     def get_all_users(self, obj):
-        users = User.objects.all().values('username', 'id')
-        return users
+        return User.objects.all().values('username', 'id')
 
     class Meta:
         model = UserFriends
-        fields = ['user', 'friends', 'friends_username', 'all_users']
+        fields = ['user_username', 'friends', 'friends_username', 'all_users']
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     def create(self, validated_data):
-        print(validated_data)
         try:
             obj = get_object_or_404(UserFriends, user=self.context.get("request").user)
             if validated_data['friends']:
@@ -240,93 +251,85 @@ class UserFriendsSerializer(serializers.HyperlinkedModelSerializer):
                         obj.remove_friend(User.objects.get(username=x))
                     else:
                         obj.add_friend(User.objects.get(username=x))
-            obj.save()
-            return (obj)
+            obj.edit()
+            return obj
         except:
-            if UserFriends.objects.filter(user=self.context.get("request").user).exists():
-                return UserFriends.objects.filter(user=self.context.get("request").user)
+            user = self.context.get("request").user
+            if UserFriends.objects.filter(user=user).exists():
+                return UserFriends.objects.filter(user=user)
             else:
                 user = super(UserFriendsSerializer, self).create(validated_data)
-                user.user = self.context.get("request").user
+                user.user = user
                 user.save()
-                return (user)
+                return user
 
 class UserFriendsViewSet(viewsets.ModelViewSet):
     serializer_class = UserFriendsSerializer
-    def get_queryset(self):
-        user = self.request.user
-        return UserFriends.objects.all().filter(user=user)
-
-
-
-class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
-    permission_classes = (IsAuthenticated,)
-    class Meta:
-        model = UserGuild
-        fields = ['user', 'name']
-        read_only_fields = ['is_staff', 'is_superuser', 'user']
-
-    def create(self, validated_data):
-        try:
-            obj = get_object_or_404(UserGuild, user=self.context.get("request").user)
-            obj.name = validated_data['name']
-            obj.save()
-            return (obj)
-        except:
-            user = super(UserGuildSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.save()
-            return (user)
-
-class UserGuildViewSet(viewsets.ModelViewSet):
-    #queryset = UserGuild.objects.all()
-    serializer_class = UserGuildSerializer
 
     def get_queryset(self):
         user = self.request.user
-        return UserGuild.objects.all().filter(user=user)
+        return UserFriends.objects.filter(user=user).order_by()
 
-class UserMatchmakingSerializer(serializers.HyperlinkedModelSerializer):
-    permission_classes = (IsAuthenticated,)
-    enemy = serializers.SerializerMethodField()
-    class Meta:
-        model = UserMatchmaking
-        fields = ['url', 'user', 'enemy']
-        read_only_fields = ['is_staff', 'is_superuser', 'user']
+# ------------- #
 
-    def create(self, validated_data):
-        try:
-            user = get_object_or_404(UserMatchmaking, user=self.context.get("request").user)
-            return (user)
-        except:
-            user = super(UserMatchmakingSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.save()
-            return (user)
+# class UserGuildSerializer(serializers.HyperlinkedModelSerializer):
+#     permission_classes = (IsAuthenticated,)
+#     class Meta:
+#         model = UserGuild
+#         fields = ['user', 'name']
+#         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
-    def get_enemy(self, obj):
-            level = get_object_or_404(UserData, user=self.context.get("request").user).level
-            enemy = UserMatchmaking.objects.all().filter(user__userdata__level=level).values('user', 'user__username')
-            enemy = enemy.exclude(user__username=obj)
-            fighter = enemy.order_by('?').first()
-            try:
-                return ("http://localhost/api/users/" + str(fighter['user']) + "/")
-            except:
-                return None
-            # if len(enemy) > 1:
-            #     i = randint(0, len(enemy) - 1)
-            #     UserMatchmaking.objects.filter(user__userdata__name__in=[obj, enemy[i]['user__username']]).delete()
-            #     return ("http://localhost/api/users/" + str(enemy[i]['user']) + "/")
-            # else:
-            #     try:
-            #         UserMatchmaking.objects.filter(user__userdata__name__in=[obj, enemy[0]['user__username']]).delete()
-            #         return ("http://localhost/api/users/" + str(enemy[0]['user']) + "/")
-            #     except:
-            #         return (None)
+#     def create(self, validated_data):
+#         try:
+#             obj = get_object_or_404(UserGuild, user=self.context.get("request").user)
+#             obj.name = validated_data['name']
+#             obj.save()
+#             return (obj)
+#         except:
+#             user = super(UserGuildSerializer, self).create(validated_data)
+#             user.user = self.context.get("request").user
+#             user.save()
+#             return (user)
 
-class UserMatchmakingViewSet(viewsets.ModelViewSet):
-    queryset = UserMatchmaking.objects.all()
-    serializer_class = UserMatchmakingSerializer
+# class UserGuildViewSet(viewsets.ModelViewSet):
+#     #queryset = UserGuild.objects.all()
+#     serializer_class = UserGuildSerializer
+
+#     def get_queryset(self):
+#         user = self.request.user
+#         return UserGuild.objects.all().filter(user=user)
+
+# class UserMatchmakingSerializer(serializers.HyperlinkedModelSerializer):
+#     permission_classes = (IsAuthenticated,)
+#     enemy = serializers.SerializerMethodField()
+#     class Meta:
+#         model = UserMatchmaking
+#         fields = ['url', 'user', 'enemy']
+#         read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+#     def create(self, validated_data):
+#         try:
+#             user = get_object_or_404(UserMatchmaking, user=self.context.get("request").user)
+#             return (user)
+#         except:
+#             user = super(UserMatchmakingSerializer, self).create(validated_data)
+#             user.user = self.context.get("request").user
+#             user.save()
+#             return (user)
+
+#     def get_enemy(self, obj):
+#             level = get_object_or_404(UserData, user=self.context.get("request").user).level
+#             enemy = UserMatchmaking.objects.all().filter(user__userdata__level=level).values('user', 'user__username')
+#             enemy = enemy.exclude(user__username=obj)
+#             fighter = enemy.order_by('?').first()
+#             try:
+#                 return ("http://localhost/api/users/" + str(fighter['user']) + "/")
+#             except:
+#                 return None
+
+# class UserMatchmakingViewSet(viewsets.ModelViewSet):
+#     queryset = UserMatchmaking.objects.all()
+#     serializer_class = UserMatchmakingSerializer
 
 class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(allow_null=True, required=False)
@@ -334,7 +337,7 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     class Meta:
         model = UserTexture
-        fields = ['id', 'texture']
+        exclude = ('url', 'user')
         read_only_fields = ['is_staff', 'is_superuser', 'user']
 
     @csrf_exempt
@@ -342,7 +345,7 @@ class UserTextureSerializer(serializers.HyperlinkedModelSerializer):
         try:
             obj = UserTexture.objects.get(user=self.context.get("request").user, id=validated_data['id'])
             obj.texture = validated_data['texture']
-            obj.save()
+            obj.edit()
             return (obj)
         except:
             user = super(UserTextureSerializer, self).create({ 'texture': validated_data['texture'] })
@@ -355,6 +358,37 @@ class UserTextureViewSet(viewsets.ModelViewSet):
     serializer_class = UserTextureSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilterTexture
+
+class CommutaryShopSerializer(serializers.HyperlinkedModelSerializer):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    class Meta:
+        model = Shop
+        fields = ['user', 'id', 'data']
+        read_only_fields = ['is_staff', 'is_superuser', 'user']
+
+    @csrf_exempt
+    def create(self, validated_data):
+        if Shop.objects.filter(user=self.context.get("request").user).exists():
+            obj = Shop.objects.get(user=self.context.get("request").user)
+            obj.data = validated_data['data']
+            obj.save()
+            return (obj)
+        else:
+            user = super(CommutaryShopSerializer, self).create(validated_data)
+            user.user = self.context.get("request").user
+            user.save()
+            return (user)
+
+class CommutaryViewSet(viewsets.ModelViewSet):
+    serializer_class = CommutaryShopSerializer
+
+    def get_queryset(self):
+        queryset = Shop.objects.all()
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        return queryset
 
 class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
     permission_classes = (IsAuthenticated,)
@@ -372,10 +406,7 @@ class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
         return (user)
 
 class CommutaryTextureViewSet(viewsets.ModelViewSet):
-    #queryset = ShopTexture.objects.all()
     serializer_class = CommutaryTextureShopSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ShopFilterTexture
 
     def get_queryset(self):
         user = self.request.user
@@ -405,12 +436,13 @@ class UserDungeonsSerializer(serializers.HyperlinkedModelSerializer):
 
 class UserDungeonsViewSet(viewsets.ModelViewSet):
     serializer_class = UserDungeonsSerializer
-    #filter_backends = [DjangoFilterBackend]
-    #filterset_class = UserDungeons
 
     def get_queryset(self):
-        user = self.request.user
-        return UserDungeons.objects.all().filter(user=user)
+        queryset = UserDungeons.objects.all()
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        return queryset
 
 class DeleteUserDungeonsSerializer(serializers.ModelSerializer):
     class Meta:

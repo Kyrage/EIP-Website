@@ -39,9 +39,10 @@ router.register('users_friends', api.UserFriendsViewSet, basename='users_friends
 #router.register('users_guild', api.UserGuildViewSet, basename='users_guild')
 #router.register('game/users_matchmaking', api.UserMatchmakingViewSet)
 router.register('game/users_texture', api.UserTextureViewSet)
+router.register('shops', api.CommutaryViewSet, basename='shops')
 router.register('shop/textures', api.CommutaryTextureViewSet, basename='shop_textures')
 router.register('users_dungeons', api.UserDungeonsViewSet, basename='user_dungeons')
-router.register('delete_users_dungeons', api.DeleteUserDungeonsViewSet, basename='delete_users_dungeons')
+router.register('users_dungeons', api.DeleteUserDungeonsViewSet, basename='delete_users_dungeons')
 
 urlpatterns += [
     path('api/', include(router.urls)),
