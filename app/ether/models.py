@@ -93,6 +93,7 @@ class UserData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50, blank=False, null=True)
     level = models.IntegerField(default=1)
+    skinId = models.IntegerField(default=0)
     crystal = models.IntegerField(default=1000)
     cash = models.IntegerField(default=1000)
     mentoring = models.IntegerField(default=0)

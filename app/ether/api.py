@@ -29,6 +29,8 @@ def initToken(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
         UserData.objects.create(user=instance)
         UserFriends.objects.create(user=instance)
+        UserSkills.object.create(user=instance, _id=0, _parentId=2, name='FireTarget', level=1, equipped=0)
+        UserSkills.object.create(user=instance, _id=1, _parentId=3, name='IceProjectile', level=1, equipped=0)
 
 # --> FILTER
 class UserFilterData(FilterSet):
@@ -108,6 +110,11 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
             except:
                 pass
             try:
+                if validated_data['skinId']:
+                    obj.skinId = validated_data['skinId']
+            except:
+                pass
+            try:
                 if validated_data['crystal']:
                     obj.crystal = validated_data['crystal']
             except:
@@ -145,11 +152,14 @@ class UserDataSerializer(serializers.HyperlinkedModelSerializer):
             obj.edit()
             return (obj)
         except:
-            user = super(UserDataSerializer, self).create(validated_data)
-            user.user = self.context.get("request").user
-            user.name = self.context.get("request").user.username
-            user.save()
-            return (user)
+            if UserData.objects.filter(user=self.context.get("request").user).exists():
+                return UserData.objects.filter(user=self.context.get("request").user)
+            else:
+                user = super(UserDataSerializer, self).create(validated_data)
+                user.user = self.context.get("request").user
+                user.name = self.context.get("request").user.username
+                user.save()
+                return (user)
 
 class UserDataViewSet(viewsets.ModelViewSet):
     serializer_class = UserDataSerializer
@@ -391,6 +401,7 @@ class CommutaryViewSet(viewsets.ModelViewSet):
         return queryset
 
 class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(allow_null=True, required=False)
     permission_classes = (IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     class Meta:
@@ -400,10 +411,19 @@ class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
 
     @csrf_exempt
     def create(self, validated_data):
-        user = super(CommutaryTextureShopSerializer, self).create(validated_data)
-        user.user = self.context.get("request").user
-        user.save()
-        return (user)
+        if ShopTexture.objects.filter(id=validated_data['id']).exists():
+            obj = ShopTexture.objects.get(id=validated_data['id'])
+            if validated_data['price'] == 0:
+                obj.delete()
+            else:
+                obj.data = validated_data['data']
+                obj.save()
+            return (obj)
+        else:
+            user = super(CommutaryTextureShopSerializer, self).create(validated_data)
+            user.seller = self.context.get("request").user
+            user.save()
+            return (user)
 
 class CommutaryTextureViewSet(viewsets.ModelViewSet):
     serializer_class = CommutaryTextureShopSerializer
