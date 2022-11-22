@@ -411,15 +411,22 @@ class CommutaryTextureShopSerializer(serializers.HyperlinkedModelSerializer):
 
     @csrf_exempt
     def create(self, validated_data):
-        if ShopTexture.objects.filter(id=validated_data['id']).exists():
-            obj = ShopTexture.objects.get(id=validated_data['id'])
-            if validated_data['price'] == 0:
-                obj.delete()
+        try:
+            print(validated_data['id'])
+            if ShopTexture.objects.filter(id=validated_data['id']).exists():
+                obj = ShopTexture.objects.get(id=validated_data['id'])
+                if validated_data['price'] == 0:
+                    obj.delete()
+                else:
+                    obj.price = validated_data['price']
+                    obj.save()
+                return (obj)
             else:
-                obj.data = validated_data['data']
-                obj.save()
-            return (obj)
-        else:
+                user = super(CommutaryTextureShopSerializer, self).create(validated_data)
+                user.seller = self.context.get("request").user
+                user.save()
+                return (user)
+        except:
             user = super(CommutaryTextureShopSerializer, self).create(validated_data)
             user.seller = self.context.get("request").user
             user.save()
