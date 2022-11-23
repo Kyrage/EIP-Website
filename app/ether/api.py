@@ -44,8 +44,9 @@ def initToken(sender, instance=None, created=False, **kwargs):
     Creation d'un Token a la creation d'un utilisateur
     """
     if created:
+        print(instance.username)
         Token.objects.create(user=instance)
-        UserData.objects.create(user=instance)
+        UserData.objects.create(user=instance, name=instance.username)
         UserFriends.objects.create(user=instance)
         UserSkills.objects.create(user=instance, _id=0, _parentId=2, name='FireTarget', level=1, equipped=0)
         UserSkills.objects.create(user=instance, _id=1, _parentId=3, name='IceProjectile', level=1, equipped=0)
