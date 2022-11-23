@@ -20,6 +20,24 @@ from .views import *
 
 import json
 
+defautJson = {
+    "items":[
+        {"id":0,"name":"Iron","moneyType":25,"price":150,"craft":False,"spell":False,"quantity":7},
+        {"id":1,"name":"Cobalt","moneyType":25,"price":150,"craft":False,"spell":False,"quantity":10},
+        {"id":2,"name":"Bronze","moneyType":25,"price":150,"craft":False,"spell":False,"quantity":10}
+    ],
+    "textures":[
+        {"id":0,"name":"Kitchen Floor","moneyType":25,"price":500,"quantity":1},
+        {"id":1,"name":"Kitchen Wall","moneyType":25,"price":500,"quantity":1},
+        {"id":2,"name":"Dirt Floor","moneyType":25,"price":500,"quantity":1},
+        {"id":3,"name":"Cobblestone Wall","moneyType":25,"price":500,"quantity":1},
+        {"id":4,"name":"Plank","moneyType":25,"price":500,"quantity":1},
+        {"id":5,"name":"Wood","moneyType":25,"price":500,"quantity":1},
+        {"id":6,"name":"Stone Floor","moneyType":25,"price":500,"quantity":1},
+        {"id":7,"name":"Dark Stone Wall","moneyType":25,"price":500,"quantity":1}
+    ]
+}
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def initToken(sender, instance=None, created=False, **kwargs):
     """
@@ -31,6 +49,7 @@ def initToken(sender, instance=None, created=False, **kwargs):
         UserFriends.objects.create(user=instance)
         UserSkills.objects.create(user=instance, _id=0, _parentId=2, name='FireTarget', level=1, equipped=0)
         UserSkills.objects.create(user=instance, _id=1, _parentId=3, name='IceProjectile', level=1, equipped=0)
+        Shop.objects.create(user=instance, data=defautJson)
 
 # --> FILTER
 class UserFilterData(FilterSet):
