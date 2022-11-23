@@ -29,8 +29,8 @@ def initToken(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
         UserData.objects.create(user=instance)
         UserFriends.objects.create(user=instance)
-        UserSkills.object.create(user=instance, _id=0, _parentId=2, name='FireTarget', level=1, equipped=0)
-        UserSkills.object.create(user=instance, _id=1, _parentId=3, name='IceProjectile', level=1, equipped=0)
+        UserSkills.objects.create(user=instance, _id=0, _parentId=2, name='FireTarget', level=1, equipped=0)
+        UserSkills.objects.create(user=instance, _id=1, _parentId=3, name='IceProjectile', level=1, equipped=0)
 
 # --> FILTER
 class UserFilterData(FilterSet):
